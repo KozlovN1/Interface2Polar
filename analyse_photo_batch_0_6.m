@@ -1,5 +1,5 @@
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.5.1 (2022-05-10)
+% v.0.6 (2022-05-13)
 % Nick Kozlov
 
 %% Init
@@ -17,13 +17,14 @@ end
 
 %% %Options: logical switches%
    exportprof = true;
-   showfig = false;
+   showfig = false; % Keep it false with large series to avoid memory drainage
 
 %% Parameters
-epsilon = 3; % blue-to-green ratio
-ROI = [1340,390,3930,2990];
-center = [2630.5,1679.5];
-R2 = 0.5 * 2764; % pix
+epsilon = 6; % ratio between colour channels
+cl_pair = [2, 3]; % the first element is the dominant colour, the second -- the submissive one: 1 - R, 2 - G, 3 - B
+ROI = [351,372,351+1164,372+1194];
+center = [975,975];
+R2 = 0.5 * 1490; % pix
 
 % exportdir = '';
 %      path = '';
@@ -39,21 +40,30 @@ if exportprof == true
     %_%
 end
 %Import data%
-suffix='*.jpg';
+suffix='\w*.jpg';
 if  exist('path','var')==1 && ischar(path)
     path = uigetdir(path,'Select the directory');
 else
     path = uigetdir([],'Select the directory');
 end
-direc = dir([path,filesep,suffix]); filenames={};
-[filenames{1:length(direc),1}] = deal(direc.name);
+direc = dir([path,filesep,'*.*']);
+filenames={}; filenames1={};
+[filenames1{1:length(direc),1}] = deal(direc.name);
+cnt = 0;
+for i=1:length(filenames1)
+    if regexpi(filenames1{i},suffix) == 1
+        cnt = cnt + 1;
+        filenames(cnt,1) = filenames1(i);
+    end
+end
+clearvars cnt filenames1
 filenames = sortrows(filenames); %sort all image files
 %_%
 
 %% Main program
 for i = 1:1:length(filenames)
     [phi, r, fig, fig1] = ...
-        anlz_photo(path, filenames{i}, epsilon, ROI, center, R2, showfig, exportprof, exportdir);
+        anlz_photo(path, filenames{i}, epsilon, cl_pair, ROI, center, R2, showfig, exportprof, exportdir);
     clc;
     disp(['Processing files: ' int2str(round(i/length(filenames)*100,2)) ' %']);
 end
