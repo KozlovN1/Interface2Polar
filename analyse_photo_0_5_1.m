@@ -1,5 +1,5 @@
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.5.1 (2022-05-10)
+% v.0.6 (2022-05-13)
 % Nick Kozlov
 
 %% Init
@@ -20,10 +20,13 @@ end
    showfig = true;
 
 %% Parameters
-epsilon = 3; % blue-to-green ratio
-ROI = [1340,390,3930,2990];
-center = [2630.5,1679.5];
-R2 = 0.5 * 2764; % pix
+epsilon = 2.; % ratio between colour channels
+cl_pair = [2, 1]; % the first element is the dominant colour, the second -- the submissive one: 1 - R, 2 - G, 3 - B
+ROI = [1360,624,1360+1396,624+1296];
+center = [2048,1270];
+% ROI = [];
+% center = [];
+R2 = 0.5 * 2102; % pix
 
 % exportdir = '';
 %      path = '';
@@ -52,8 +55,8 @@ end
 %% Main program
 if exportprof == true
     [phi, r, fig, fig1] = ...
-        anlz_photo(path, filename, epsilon, ROI, center, R2, showfig, exportprof, exportdir);
+        anlz_photo(path, filename, epsilon, cl_pair, ROI, center, R2, showfig, exportprof, exportdir);
 else
     [phi, r, fig, fig1] = ...
-        anlz_photo(path, filename, epsilon, ROI, center, R2, showfig, exportprof);
+        anlz_photo(path, filename, epsilon, cl_pair, ROI, center, R2, showfig, exportprof);
 end
