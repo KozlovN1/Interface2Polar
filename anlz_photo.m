@@ -1,16 +1,28 @@
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.5.2 (2022-05-11)
+% v.0.7.2 (2022-05-16)
 % Nick Kozlov
 
 function [pphi, rr, fig, fig1] = ...
-    anlz_photo(path, filename, epsilon, ROI, center, R2, showfig, exportprof, exportdir)
+    anlz_photo(path, filename, epsilon, cl_pair, ROI, center, ...
+    R2, showfig, exportprof, exportdir)
     
+    % Get the image
     image1 = imread(strcat(path,filesep,filename));
     
+    % Check the coordinates
+    if isempty(ROI)
+        ROI = [1, 1, size(image1,2), size(image1,2)];
+    end
+    if isempty(center)
+        center = [0.5*size(image1,2), 0.5*size(image1,2)];
+    end
+    
+    % Find the interface
     counter=0;
+    % scan left to right
     for j=ROI(2):1:ROI(4)
         for i=ROI(1):1:center(1)
-            if image1(j,i,3)/image1(j,i,2) >= epsilon
+            if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
                 counter=counter+1;
                 xintfc(counter)=i;
                 yintfc(counter)=j;
@@ -18,11 +30,25 @@ function [pphi, rr, fig, fig1] = ...
             end
         end
     end
+    % scan upwards
+    for i=ROI(1):1:ROI(3)
+        j=ROI(4);
+        while j>center(2)
+            if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                counter=counter+1;
+                xintfc(counter)=i;
+                yintfc(counter)=j;
+                break;
+            end
+            j=j-1;
+        end
+    end
+    % scan rigth to left
     j=ROI(4);
     while j>ROI(2)
         i=ROI(3);
         while i>center(1)
-            if image1(j,i,3)/image1(j,i,2) >= epsilon
+            if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
                 counter=counter+1;
                 xintfc(counter)=i;
                 yintfc(counter)=j;
@@ -32,7 +58,23 @@ function [pphi, rr, fig, fig1] = ...
         end
         j=j-1;
     end
-
+    % scan downwards
+    i=ROI(3);
+    while i>=ROI(1)
+        j=ROI(2);
+        while j<center(2)
+            if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                counter=counter+1;
+                xintfc(counter)=i;
+                yintfc(counter)=j;
+                break;
+            end
+            j=j+1;
+        end
+        i=i-1;
+    end
+    
+    % Transfer to polar coordinates
     r=zeros(1,counter);
     phi=zeros(1,counter);
     for i=1:1:counter
@@ -69,6 +111,8 @@ function [pphi, rr, fig, fig1] = ...
     % Remove non-unique values, thus enabling the interpolation
     cnt1 = 1;
     cnt2 = 0;
+    ppphi = 0;
+    rrr = 0;
     for i =1:1:length(phi)
         if length(find(phi == phi(i) ) ) > 1
             if ~ ppphi( ppphi == phi(i) )
@@ -78,6 +122,7 @@ function [pphi, rr, fig, fig1] = ...
                     cnt2 = cnt2 + 1;
                 end
                 ppphi(cnt1) = ppphi(cnt1)/cnt2;
+                rrr(cnt1) = rrr(cnt1)/cnt2;
                 cnt2 = 0;
             end
         else
@@ -86,9 +131,12 @@ function [pphi, rr, fig, fig1] = ...
             cnt1 = cnt1 + 1;
         end
     end
+    
     % Interpolate the azimuthal interface profile
-    pphi = linspace(-pi,pi, ceil( 0.01*length(r) )*100 );
-    rr = interp1( ppphi,rrr,pphi,'nearest','extrap');
+    pphi = linspace(-pi,pi, ceil( 0.01*length(rrr) )*100 );
+    rr = interp1( ppphi,rrr,pphi,'linear','extrap');
+    %_%
+    % Median filter could be applied here to make the profile smoother
     %_%
 
     %% Figures and plotting
@@ -107,11 +155,12 @@ function [pphi, rr, fig, fig1] = ...
         ROIrect = rectangle('Position', [ROI(1) ROI(2) ROI(3)-ROI(1) ROI(4)-ROI(2)]);
         ROIrect.LineStyle = '--';
         ROIrect.EdgeColor = 'g';
-        plot(xintfc,yintfc,'r-');
+        plot(xintfc,yintfc,'r.','MarkerSize',3);
         
         figure(fig1); 
-        subplot(2,1,1); plot(r); xlabel('Point number'); ylabel('{\it r}, pix');
-        subplot(2,1,2); plot(pphi./pi,1 - rr/R2); % ylim([0 0.25]);
+        subplot(2,1,1); plot(r); title('Raw signal'); xlabel('Point number'); 
+            ylabel('{\it r}, pix');
+        subplot(2,1,2); plot(pphi./pi,1 - rr/R2); title('Azimuthal profile');
             xlabel('\phi/\pi'); ylabel('{\it h}/{\it R}_2');
     else
         fig = '';
