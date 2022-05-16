@@ -1,11 +1,11 @@
+function [pphi, rr, fig, fig1] = ...
+    anlz_photo(path, filename, epsilon, cl_pair, ROI, center, ...
+    R2, showfig, exportprof, exportdir)
+
 %% Obtaining an interface coordinates from a colour photograph.
 % v.0.7.2 (2022-05-16)
 % Nick Kozlov
 
-function [pphi, rr, fig, fig1] = ...
-    anlz_photo(path, filename, epsilon, cl_pair, ROI, center, ...
-    R2, showfig, exportprof, exportdir)
-    
     % Get the image
     image1 = imread(strcat(path,filesep,filename));
     
