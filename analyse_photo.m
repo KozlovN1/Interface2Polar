@@ -1,5 +1,5 @@
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.0.1 (2024-07-11)
+% v.0.9.0.2 (2024-07-11)
 % Nick Kozlov
 
 %% Init
@@ -29,11 +29,11 @@ end
 switch runmode
     case "colour"
         if exportprof0 == true
-            [phi, r, fig, fig1] = anlz_photo(path, filename, epsilon, ROI, ...
-                center, R2, showfig, exportfig, exportprof0, exportdir);
+            [phi, r, fig, fig1] = anlz_photo(path, filename, epsilon, cl_pair, ...
+                ROI, center, R2, showfig, exportfig, exportprof0, exportdir);
         else
-            [phi, r, fig, fig1] = anlz_photo(path, filename, epsilon, ROI, ...
-                center, R2, showfig, exportfig, exportprof0);
+            [phi, r, fig, fig1] = anlz_photo(path, filename, epsilon, cl_pair, ...
+                ROI, center, R2, showfig, exportfig, exportprof0);
         end
     case "monochrome"
         if exportprof0 == true

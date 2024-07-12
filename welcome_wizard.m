@@ -3,6 +3,7 @@ if exist(lastrunfile, "file")==2
     lastrun = fopen(lastrunfile);
     fgets(lastrun);
     configfile = fgetl(lastrun);
+    configdir = fgetl(lastrun);
 end
 [configfile, configdir] = uigetfile(strcat(configdir, filesep, configfile),...
     "File with parameters of configuration");
@@ -15,7 +16,7 @@ if exist(lastrunfile, "file")==2
     if exportprof==true || exportprof0==true || exportfig==true
         exportdir = fgetl(lastrun);
     end
-    fclose(lastrunfile);
+    fclose(lastrun);
 end
 
 if path ~= ""
@@ -31,3 +32,13 @@ if exportprof==true || exportprof0==true || exportfig==true
         exportdir = uigetdir(configdir, "Directory to save results");
     end
 end
+
+%Save the last paths%
+f = fopen(lastrunfile, "w");
+fprintf(f, "%s", "The parameters registered on ");
+fprintf(f, "%s\n", string(datetime));
+fprintf(f, "%s\n", configfile);
+fprintf(f, "%s\n", configdir);
+fprintf(f, "%s\n", path);
+fprintf(f, "%s\n", exportdir);
+fclose(f);
