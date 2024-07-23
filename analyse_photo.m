@@ -1,5 +1,5 @@
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.0.2 (2024-07-11)
+% v.0.9.0.3 (2024-07-23)
 % Nick Kozlov
 
 %% Init
@@ -10,6 +10,7 @@ init_all;
   configdir = "";
        path = "";
   exportdir = "";
+
 lastrunfile = "lastrun.txt";
 
 %% Welcome Wizard
@@ -26,6 +27,9 @@ end
 
 %% Main program
 % Do the evaluation %
+if runmode == "color"
+    runmode = "colour";
+end
 switch runmode
     case "colour"
         if exportprof0 == true
