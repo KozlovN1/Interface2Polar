@@ -1,9 +1,9 @@
 function [pphi, rr, fig, fig1] = ...
     anlz_photo(path, filename, epsilon, cl_pair, ROI, center, ...
-    R2, showfig, exportfig, exportprof, exportdir)
+    R2, showfig, exportfig, exportprof, do_circshift, exportdir)
     
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.7.4 (2023-05-18)
+% v.0.9.1 (2023-07-23)
 % Nick Kozlov
     
     % Get the image
@@ -147,8 +147,49 @@ function [pphi, rr, fig, fig1] = ...
     end
     
     % Interpolate the azimuthal interface profile
-    pphi = linspace(-pi,pi, ceil( 0.01*length(rrr) )*100 );
-    rr = interp1( ppphi,rrr,pphi,'linear','extrap');
+    nsteps = ceil( 0.01*length(rrr) )*100;
+    fprintf('%s %d\n','length(rrr) = ',length(rrr)) % DEBUG %
+    fprintf('%s %d\n','nsteps = ',nsteps) % DEBUG %
+    fprintf('%s','find(isnan(rrr)) = ')   % DEBUG %
+    find(isnan(rrr))                      % DEBUG %
+    % Below: I do not know why I had to subtract 2 steps from pi, but it
+    % works => TEMPORARY WORKAROUND
+    % pphi = linspace(-pi,pi*(1-2*2/nsteps), nsteps );
+    % pphi = linspace(-pi,pi-2*pi/nsteps, nsteps );
+    pphi = linspace(-pi,pi, nsteps );
+    fprintf('%s','find(isnan(pphi)) = ')     % DEBUG %
+    find(isnan(pphi))                        % DEBUG %
+    if do_circshift == false
+        rr = interp1( ppphi,rrr,pphi,'linear','extrap');
+    else
+        % Below: Interpolate => interpolate with the circular shift => shift it
+        % back and take the average.
+        K = nsteps/2;
+        % rr1 = interp1( circshift(ppphi,K),circshift(rrr,K),...
+        %     circshift(pphi,K),'linear');
+        ppphi1 = circshift(ppphi,K);
+        for i=1:1:K
+            ppphi1(i) = ppphi1(i) - pi;
+        end
+        for i=K+1:1:length(ppphi1)
+            ppphi1(i) = ppphi1(i) + pi;
+        end
+        rrr1 = circshift(rrr,K);
+        pphi1 = circshift(pphi,K);
+        rr1 = interp1(ppphi1,rrr1,pphi,'linear');
+        fprintf('%s','find(isnan(rr1)) = ')      % DEBUG %
+        find(isnan(rr1))                         % DEBUG %
+    
+        rr = interp1( ppphi,rrr,pphi,'linear');
+        % rr = interp1( pphi,circshift(rr1,-K),pphi,'linear');
+        % fprintf('%s','find(isnan(rr)) = ')       % DEBUG %
+        % find(isnan(rr))                          % DEBUG %
+        
+        rr = (rr + circshift(rr1,-K))/2;
+        % rr = circshift(rr1,-K);
+    end
+    fprintf('%s','AGAIN find(isnan(rr)) = ') % DEBUG %
+    find(isnan(rr))                          % DEBUG %
     %_%
     % Median filter could be applied here to make the profile smoother
     %_%
