@@ -2,8 +2,8 @@ function [pphi, rr, fig, fig1] = ...
     anlz_photo_bw(path, filename, epsilon, ROI, center, ...
     R2, showfig, exportfig, exportprof, R_min, R_max, exportdir)
     
-%% Obtaining an interface coordinates from a grayscale photograph.
-% v.0.8.1 (2023-07-13)
+%% Obtaining interface coordinates from a grayscale photograph.
+% v.0.9.1.1 (2024-08-02)
 % Nick Kozlov
     
     % Get the image
@@ -16,7 +16,7 @@ function [pphi, rr, fig, fig1] = ...
         ROI = [1, 1, size(image1,2), size(image1,1)]; % ???
     end
     if isempty(center)
-        center = [0.5*size(image1,2), 0.5*size(image1,1)]; % ???
+        center = [round(0.5*size(image1,2)), round(0.5*size(image1,1))]; % ???
     end
     if isempty(R_min)
         R_min=0;
