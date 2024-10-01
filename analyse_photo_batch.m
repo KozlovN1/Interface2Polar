@@ -17,7 +17,7 @@ init_all;
 % ROI = [1340,390,3930,2960];
 % center = [2630.5,1679.5];
 % R2 = 0.5 * 2764; % pix
-% window=24;
+% windoww=24;
 
 exportdir = '/media/nk/SP_NK/all/Images-expmnts/Оля/Вода-флуоринерт/q=0.8/2700_3,3750Гц/interface/';
      path = '/media/nk/SP_NK/all/Images-expmnts/Оля/Вода-флуоринерт/q=0.8/2700_3,3750Гц/tiff/';
@@ -69,7 +69,7 @@ for i = 1:1:length(filenames)
         end
         print(strcat(exportdir,filesep,filename,'.png'),'-dpng','-r300');
     end
-    [phi_av,error1,r_av,error2]=local_average(phi',r',window,0);
+    [phi_av,error1,r_av,error2]=local_average(phi',r',windoww,0);
     phi_ed=linspace(-pi,pi,2000);
     r_ed=interp1(phi_av,r_av,phi_ed,'spline','extrap');
     if exportprof == true

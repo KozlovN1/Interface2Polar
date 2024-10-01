@@ -1,5 +1,5 @@
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.1 (2024-07-23)
+% v.0.9.2 (2024-07-23)
 % Nick Kozlov
 
 %% Init
@@ -52,7 +52,7 @@ switch runmode
 end
 
 % Post processing the profile %
-[phi_av,error1,r_av,error2]=local_average(phi',r',window,0);
+[phi_av,error1,r_av,error2]=local_average(phi',r',windoww,0);
 phi_ed=linspace(-pi,pi,2000);
 r_ed=interp1(phi_av,r_av,phi_ed,'spline','extrap');
 

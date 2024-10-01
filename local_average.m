@@ -1,12 +1,13 @@
-function [average1,error1,average2,error2]=local_average(vector1,vector2,window,step)
+function [average1,error1,average2,error2]=local_average(vector1,vector2,windoww,step)
 
 %% Smoothing a vector by means of averaging data locally:
 % - check for missing data;
 % Updates:
 % - abs(vector1(RunAv)-vector1(RunAv+1))/step>=2
+% window --> windoww
 %
-% v. 1.0.1
-% 2023-04-24. Nick Kozlov
+% v. 1.0.2
+% 2023-10-01. Nick Kozlov
 
 if step==0
     testvector=zeros(size(vector1,1)-1,1);
@@ -18,15 +19,15 @@ if step==0
 end
 
 C1=0; C2=0;
-average1=zeros(floor(size(vector1,1)/window),1);
-error1=zeros(floor(size(vector1,1)/window),1);
-average2=zeros(floor(size(vector1,1)/window),1);
-error2=zeros(floor(size(vector1,1)/window),1);
+average1=zeros(floor(size(vector1,1)/windoww),1);
+error1=zeros(floor(size(vector1,1)/windoww),1);
+average2=zeros(floor(size(vector1,1)/windoww),1);
+error2=zeros(floor(size(vector1,1)/windoww),1);
 
-buffer1=zeros(window,1);
-buffer2=zeros(window,1);
+buffer1=zeros(windoww,1);
+buffer2=zeros(windoww,1);
 
-if window < size(vector1,1)
+if windoww < size(vector1,1)
      %% DBG %%
 %     scrsz = get(0,'ScreenSize');
 %     fig=figure('Position',[scrsz(3) scrsz(4) scrsz(3) scrsz(4)]);
@@ -51,7 +52,7 @@ if window < size(vector1,1)
             C1=0;
             C2=C2+1;
 %             msgbox('END'); % DBG
-        elseif C1==window || abs(vector1(RunAv)-vector1(RunAv+1))/step>=2
+        elseif C1==windoww || abs(vector1(RunAv)-vector1(RunAv+1))/step>=2
             average1(C2+1)=average1(C2+1)/C1;
             error1(C2+1)=std(buffer1);
             average2(C2+1)=average2(C2+1)/C1;
