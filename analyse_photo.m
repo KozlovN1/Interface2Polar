@@ -1,5 +1,5 @@
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.2 (2024-07-23)
+% v.0.9.3 (2024-11-14)
 % Nick Kozlov
 
 %% Init
@@ -64,6 +64,18 @@ if showfig == true
     % plot(phi_av./pi,1-r_av/R2);
     errorbar(phi_av./pi,1-r_av/R2,error2./R2,'.');
     plot(phi_ed./pi,1-r_ed/R2,'LineWidth',2);
+
+    scrsz = get(0,'ScreenSize');
+    fig2=figure('Name', strcat('Azimuthal profiles: ',filename) ,'Position',...
+            [0 0 scrsz(3) scrsz(4)]); % ,'Visible','off');
+    % set(fig2,'Visible','off');
+    hold on;
+    errorbar(phi_av./pi,1-r_av/R2,error2./R2,'.');
+    plot(phi_ed./pi,1-r_ed/R2,'LineWidth',2);
+    xlim([-1 1]);
+    title('Azimuthal profile');
+    xlabel('\phi/\pi'); 
+    ylabel('{\it h}/{\it R}_2');
 end
 
 % Export the post-processed data %
