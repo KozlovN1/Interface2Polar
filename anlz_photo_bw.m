@@ -1,80 +1,141 @@
 function [pphi, rr, fig, fig1] = ...
-    anlz_photo(path, filename, epsilon, cl_pair, ROI, center, ...
-    R2, showfig, exportfig, exportprof, do_circshift, exportdir)
+    anlz_photo_bw(path, filename, epsilon, ROI, center, ...
+    R2, showfig, exportfig, exportprof, R_min, R_max, exportdir)
     
-%% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.1 (2023-07-23)
+%% Obtaining interface coordinates from a grayscale photograph.
+% v.0.9.1.1 (2024-08-02)
 % Nick Kozlov
     
     % Get the image
     image1 = imread(strcat(path,filesep,filename));
+%     image2 = double(imread(strcat(path,filesep,filename))); % You will
+%     need it to take the negative derivatives
     
     % Check the coordinates
     if isempty(ROI)
-        ROI = [1, 1, size(image1,2), size(image1,2)]; % ???
+        ROI = [1, 1, size(image1,2), size(image1,1)]; % ???
     end
     if isempty(center)
-        center = [0.5*size(image1,2), 0.5*size(image1,2)]; % ???
+        center = [round(0.5*size(image1,2)), round(0.5*size(image1,1))]; % ???
+    end
+    if isempty(R_min)
+        R_min=0;
+    end
+    if isempty(R_max)
+        R_max=R2;
+    elseif R_max==0 || R_max<=R_min
+        R_max=R2;
     end
     
-    % Find the interface
+    %% Get the limits
+    find_limits_x; % produces max_x0, min_x0
+%         msgbox({'min_x0';num2str(min_x0);'max_x0';num2str(max_x0)}); % DEBUG
+    find_limits_y; % produces max_y0, min_y0
+%         msgbox({'min_y0';num2str(min_y0);'max_y0';num2str(max_y0)}); % DEBUG
+    
+    %% Find the interface
     counter=0;
     % scan left to right
-    for j=ROI(2):1:ROI(4)
-        for i=ROI(1):1:center(1)
-            if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+    for j=min_y0:1:max_y0 % j=ROI(2):1:ROI(4)
+        deriv=zeros(ROI(3)-center(1),1);
+        for i=center(1):1:ROI(3)-1
+            deriv(i)=0.5*(image1(j,i,1)-image1(j,i-1,1)...
+                +image1(j,i+1,1)-image1(j,i,1));
+        end
+        norm=mean(deriv);
+        limit1=0;
+%         limit2=0;
+        for i=center(1):1:ROI(3)-1 % <---
+            if limit1==0 && deriv(i)-norm>=epsilon
+                limit1=i;
+            end
+            if limit1~=0 && deriv(i)-norm<=epsilon
+                limit2=i;
                 counter=counter+1;
-                xintfc(counter)=i;
+                xintfc(counter)=limit1-1+find(deriv(limit1:limit2)==max(deriv(limit1:limit2)),1);
                 yintfc(counter)=j;
-                break;
+                break
             end
         end
     end
     % scan upwards
-    for i=ROI(1):1:ROI(3)
-        j=ROI(4);
-        while j>center(2)
-            if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+    for i=min_x0:1:max_x0
+        deriv=zeros(center(2)-ROI(2),1);
+        for j=center(2):-1:ROI(2)+1
+            deriv(j)=0.5*(image1(j,i,1)-image1(j+1,i,1)...
+                +image1(j-1,i,1)-image1(j,i,1));
+        end
+%         msgbox({'deriv';num2str(length(deriv))}); % DEBUG
+        norm=mean(deriv);
+        limit1=0;
+%         limit2=0;
+        for j=center(2):-1:ROI(2) % <---
+            if limit1==0 && deriv(j)-norm>=epsilon
+                limit1=j;
+            end
+            if limit1~=0 && deriv(j)-norm<=epsilon
+                limit2=j;
                 counter=counter+1;
                 xintfc(counter)=i;
-                yintfc(counter)=j;
-                break;
+                yintfc(counter)=limit2-1+find(deriv(limit2:limit1)==max(deriv(limit2:limit1)),1);
+                break
             end
-            j=j-1;
         end
     end
     % scan rigth to left
-    j=ROI(4);
-    while j>ROI(2)
-        i=ROI(3);
-        while i>center(1)
-            if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
-                counter=counter+1;
-                xintfc(counter)=i;
-                yintfc(counter)=j;
-                break;
-            end
-            i=i-1;
+    for j=min_y0:1:max_y0
+%     for j=min_y0:round((max_y0-min_y0)/5):max_y0 % DEBUG
+        deriv=zeros(center(1)-ROI(1),1);
+        for i=center(1):-1:ROI(1)+1
+            deriv(i)=0.5*(image1(j,i,1)-image1(j,i+1,1)...
+                +image1(j,i-1,1)-image1(j,i,1));
         end
-        j=j-1;
+        norm=mean(deriv);
+        limit1=0;
+%         limit2=0;
+        for i=center(1):-1:ROI(1)
+            if limit1==0 && deriv(i)-norm>=epsilon
+                limit1=i;
+            end
+            if limit1~=0 && deriv(i)-norm<=epsilon
+                limit2=i;
+                counter=counter+1;
+                xintfc(counter)=limit2-1+find(deriv(limit2:limit1)==max(deriv(limit2:limit1)),1);
+                yintfc(counter)=j;
+                break
+            end
+        end
+%         monitor_fig; % DEBUG
     end
     % scan downwards
-    i=ROI(3);
-    while i>=ROI(1)
-        j=ROI(2);
-        while j<center(2)
-            if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+    for i=min_x0:1:max_x0
+        deriv=zeros(ROI(4)-center(2),1);
+        for j=center(2):1:ROI(4)-1
+            deriv(j)=0.5*(image1(j,i,1)-image1(j-1,i,1)...
+                +image1(j+1,i,1)-image1(j,i,1));
+        end
+%         msgbox({'deriv';num2str(length(deriv))}); % DEBUG
+        norm=mean(deriv);
+        limit1=0;
+%         limit2=0;
+        for j=center(2):1:ROI(4)-1 % <---
+            if limit1==0 && deriv(j)-norm>=epsilon
+                limit1=j;
+            end
+            if limit1~=0 && deriv(j)-norm<=epsilon
+                limit2=j;
                 counter=counter+1;
                 xintfc(counter)=i;
-                yintfc(counter)=j;
-                break;
+                yintfc(counter)=limit1-1+find(deriv(limit1:limit2)==max(deriv(limit1:limit2)),1);
+                break
             end
-            j=j+1;
         end
-        i=i-1;
     end
     
-    % Transfer to polar coordinates
+    % Show me the raw results
+%     show_raw_results; % DEBUG
+
+    %% Transfer to polar coordinates
     r=zeros(1,counter);
     phi=zeros(1,counter);
     fid50=fopen(strcat(path,filesep,'../report.txt'),'w'); % DEBUG
@@ -82,6 +143,16 @@ function [pphi, rr, fig, fig1] = ...
     for i=1:1:counter
         % let's skip the near-wall (fake) interface points %
         if (1-sqrt((xintfc(i)-center(1))^2+(yintfc(i)-center(2))^2)/R2)<0.01
+            fprintf(fid50,'bad point detected\n'); % DEBUG
+            r(i)=NaN;
+            phi(i)=NaN;
+            continue
+        elseif sqrt((xintfc(i)-center(1))^2+(yintfc(i)-center(2))^2)<R_min
+            fprintf(fid50,'bad point detected\n'); % DEBUG
+            r(i)=NaN;
+            phi(i)=NaN;
+            continue
+        elseif sqrt((xintfc(i)-center(1))^2+(yintfc(i)-center(2))^2)>R_max
             fprintf(fid50,'bad point detected\n'); % DEBUG
             r(i)=NaN;
             phi(i)=NaN;
@@ -117,9 +188,15 @@ function [pphi, rr, fig, fig1] = ...
         end
     end
     fclose(fid50); % DEBUG
+%         % Show me what you've got
+%         figure('Name','DEBUG'); % DEBUG
+%         plot(phi,r); %DEBUG
     % Remove the bad points
     r(isnan(r))=[];
     phi(isnan(phi))=[];
+%         % Show me what you've got
+%         figure('Name','DEBUG'); % DEBUG
+%         plot(phi,r); %DEBUG
 
     %%% Interpolation is necessary to remove "inclined" regions of profile
     % Remove non-unique values, thus enabling the interpolation
@@ -147,49 +224,8 @@ function [pphi, rr, fig, fig1] = ...
     end
     
     % Interpolate the azimuthal interface profile
-    nsteps = ceil( 0.01*length(rrr) )*100;
-    fprintf('%s %d\n','length(rrr) = ',length(rrr)) % DEBUG %
-    fprintf('%s %d\n','nsteps = ',nsteps) % DEBUG %
-    fprintf('%s','find(isnan(rrr)) = ')   % DEBUG %
-    find(isnan(rrr))                      % DEBUG %
-    % Below: I do not know why I had to subtract 2 steps from pi, but it
-    % works => TEMPORARY WORKAROUND
-    % pphi = linspace(-pi,pi*(1-2*2/nsteps), nsteps );
-    % pphi = linspace(-pi,pi-2*pi/nsteps, nsteps );
-    pphi = linspace(-pi,pi, nsteps );
-    fprintf('%s','find(isnan(pphi)) = ')     % DEBUG %
-    find(isnan(pphi))                        % DEBUG %
-    if do_circshift == false
-        rr = interp1( ppphi,rrr,pphi,'linear','extrap');
-    else
-        % Below: Interpolate => interpolate with the circular shift => shift it
-        % back and take the average.
-        K = nsteps/2;
-        % rr1 = interp1( circshift(ppphi,K),circshift(rrr,K),...
-        %     circshift(pphi,K),'linear');
-        ppphi1 = circshift(ppphi,K);
-        for i=1:1:K
-            ppphi1(i) = ppphi1(i) - pi;
-        end
-        for i=K+1:1:length(ppphi1)
-            ppphi1(i) = ppphi1(i) + pi;
-        end
-        rrr1 = circshift(rrr,K);
-        pphi1 = circshift(pphi,K);
-        rr1 = interp1(ppphi1,rrr1,pphi,'linear');
-        fprintf('%s','find(isnan(rr1)) = ')      % DEBUG %
-        find(isnan(rr1))                         % DEBUG %
-    
-        rr = interp1( ppphi,rrr,pphi,'linear');
-        % rr = interp1( pphi,circshift(rr1,-K),pphi,'linear');
-        % fprintf('%s','find(isnan(rr)) = ')       % DEBUG %
-        % find(isnan(rr))                          % DEBUG %
-        
-        rr = (rr + circshift(rr1,-K))/2;
-        % rr = circshift(rr1,-K);
-    end
-    fprintf('%s','AGAIN find(isnan(rr)) = ') % DEBUG %
-    find(isnan(rr))                          % DEBUG %
+    pphi = linspace(-pi,pi, ceil( 0.01*length(rrr) )*100 );
+    rr = interp1( ppphi,rrr,pphi,'linear','extrap');
     %_%
     % Median filter could be applied here to make the profile smoother
     %_%
