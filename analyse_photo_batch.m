@@ -19,8 +19,8 @@ init_all;
 % R2 = 0.5 * 2764; % pix
 % windoww=24;
 
-exportdir = '/media/nk/SP_NK/all/Images-expmnts/Оля/Вода-флуоринерт/q=0.8/2700_3,3750Гц/interface/';
-     path = '/media/nk/SP_NK/all/Images-expmnts/Оля/Вода-флуоринерт/q=0.8/2700_3,3750Гц/tiff/';
+exportdir = '';
+     path = '';
 
 run(strcat(path,filesep,'../config.m'));
 
