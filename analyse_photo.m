@@ -1,5 +1,7 @@
+function analyse_photo()
+
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.3 (2024-11-14)
+% v.0.9.4.1 (2025-02-25)
 % Nick Kozlov
 
 %% Init
