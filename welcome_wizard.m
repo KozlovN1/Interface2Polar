@@ -1,22 +1,12 @@
+% Version 0.9.4.3 (2025-02-26)
+% Nick Kozlov
 %Options and Parameters%
 if exist(lastrunfile, "file")==2
     lastrun = fopen(lastrunfile);
     fgets(lastrun);
     configfile = fgetl(lastrun);
     configdir = fgetl(lastrun);
-end
-[configfile, configdir] = uigetfile(strcat(configdir, filesep, configfile),...
-    "File with parameters of configuration");
-
-run(strcat(configdir, filesep, configfile));
-
-%More configuration%
-if exist(lastrunfile, "file")==2
     path = fgetl(lastrun);
-    if exportprof==true || exportprof0==true || exportfig==true
-        exportdir = fgetl(lastrun);
-    end
-    fclose(lastrun);
 end
 
 if path ~= ""
@@ -24,6 +14,64 @@ if path ~= ""
 else
     path = uigetdir(configdir, "Directory containing images");
 end
+
+%_%
+prompt = strcat(['Indicate the configuration file [Indicate], ' ...
+    'or you may copy the template [Copy]']);
+dlgtitle = 'Retrieving the config file';
+defbtn = 'Copy';
+answer = questdlg(prompt,dlgtitle, ...
+    'Indicate', 'Copy', 'Abort', defbtn);
+
+switch answer
+    case 'Indicate'
+        [configfile, configdir] = uigetfile(strcat( ...
+            configdir, filesep, configfile), ...
+            "File with parameters of configuration");
+    case 'Copy'
+        prompt = strcat('Please give the new file name');
+        dlgtitle = 'New file name';
+        definput = {'config.m'};
+        dims = [1 50];
+        configfile = string(inputdlg(prompt,dlgtitle,dims,definput));
+        configdir = uigetdir(configdir, ...
+            "Directory to copy the configuration template to");
+        status = copyfile('config_template.m', ...
+            strcat(configdir, filesep, configfile));
+        if status==1
+            editfile = questdlg('Please edit the file. When done press NEXT.', ...
+                'Waiting for the edit ...','NEXT','Abort','NEXT');
+            if editfile=="Abort"
+                msgbox('STOP: Operation aborted by user.')
+                assert(false, 'STOP: Operation aborted by user.')
+            end
+        else
+            msgbox('The file was not copied. Please copy manually.', ...
+                'Error','error');
+            assert(status,'Error copying file');
+        end
+    case 'Abort'
+        msgbox('STOP: Operation aborted by user.')
+        assert(false, 'STOP: Operation aborted by user.')
+end
+%_%
+
+run(strcat(configdir, filesep, configfile));
+
+%More configuration%
+if exist(lastrunfile, "file")==2
+    % path = fgetl(lastrun);
+    if exportprof==true || exportprof0==true || exportfig==true
+        exportdir = fgetl(lastrun);
+    end
+    fclose(lastrun);
+end
+
+% if path ~= ""
+%     path = uigetdir(path, "Directory containing images");
+% else
+%     path = uigetdir(configdir, "Directory containing images");
+% end
 
 if exportprof==true || exportprof0==true || exportfig==true
     if exportdir ~= ""
