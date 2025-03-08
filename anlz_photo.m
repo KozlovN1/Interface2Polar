@@ -3,7 +3,7 @@ function [pphi, rr, fig, fig1] = ...
     R2, showfig, exportfig, exportprof, do_circshift, exportdir)
     
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.1 (2023-07-23)
+% v.0.9.5 (2025-03-02)
 % Nick Kozlov
     
     % Get the image
@@ -148,17 +148,17 @@ function [pphi, rr, fig, fig1] = ...
     
     % Interpolate the azimuthal interface profile
     nsteps = ceil( 0.01*length(rrr) )*100;
-    fprintf('%s %d\n','length(rrr) = ',length(rrr)) % DEBUG %
-    fprintf('%s %d\n','nsteps = ',nsteps) % DEBUG %
-    fprintf('%s','find(isnan(rrr)) = ')   % DEBUG %
-    find(isnan(rrr))                      % DEBUG %
+    % fprintf('%s %d\n','length(rrr) = ',length(rrr)) % DEBUG %
+    % fprintf('%s %d\n','nsteps = ',nsteps) % DEBUG %
+    % fprintf('%s','find(isnan(rrr)) = ')   % DEBUG %
+    % find(isnan(rrr))                      % DEBUG %
     % Below: I do not know why I had to subtract 2 steps from pi, but it
     % works => TEMPORARY WORKAROUND
     % pphi = linspace(-pi,pi*(1-2*2/nsteps), nsteps );
     % pphi = linspace(-pi,pi-2*pi/nsteps, nsteps );
     pphi = linspace(-pi,pi, nsteps );
-    fprintf('%s','find(isnan(pphi)) = ')     % DEBUG %
-    find(isnan(pphi))                        % DEBUG %
+    % fprintf('%s','find(isnan(pphi)) = ')     % DEBUG %
+    % find(isnan(pphi))                        % DEBUG %
     if do_circshift == false
         rr = interp1( ppphi,rrr,pphi,'linear','extrap');
     else
@@ -177,8 +177,8 @@ function [pphi, rr, fig, fig1] = ...
         rrr1 = circshift(rrr,K);
         pphi1 = circshift(pphi,K);
         rr1 = interp1(ppphi1,rrr1,pphi,'linear');
-        fprintf('%s','find(isnan(rr1)) = ')      % DEBUG %
-        find(isnan(rr1))                         % DEBUG %
+        % fprintf('%s','find(isnan(rr1)) = ')      % DEBUG %
+        % find(isnan(rr1))                         % DEBUG %
     
         rr = interp1( ppphi,rrr,pphi,'linear');
         % rr = interp1( pphi,circshift(rr1,-K),pphi,'linear');
@@ -188,8 +188,8 @@ function [pphi, rr, fig, fig1] = ...
         rr = (rr + circshift(rr1,-K))/2;
         % rr = circshift(rr1,-K);
     end
-    fprintf('%s','AGAIN find(isnan(rr)) = ') % DEBUG %
-    find(isnan(rr))                          % DEBUG %
+    % fprintf('%s','AGAIN find(isnan(rr)) = ') % DEBUG %
+    % find(isnan(rr))                          % DEBUG %
     %_%
     % Median filter could be applied here to make the profile smoother
     %_%
@@ -219,8 +219,9 @@ function [pphi, rr, fig, fig1] = ...
             xlabel('\phi/\pi'); ylabel('{\it h}/{\it R}_2');
     elseif showfig==false && exportfig==true
         scrsz = get(0,'ScreenSize');
-        fig = figure('Name', strcat('Photo: ',filename) ,'Position',[0 0 0.5*scrsz(3) scrsz(4)]);
-        set(fig,'Visible','off');
+        fig = figure('Name', strcat('Photo: ',filename), ...
+            'Position',[0 0 0.5*scrsz(3) scrsz(4)],'Visible','off');
+        % set(fig,'Visible','off');
         image(image1);
         axis image;
         hold on;

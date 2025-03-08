@@ -1,83 +1,120 @@
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.6.4 (2023-05-18)
+% v.0.9.8 (2025-03-08)
 % Nick Kozlov
 
 %% Init
 init_all;
 
-%% %Options: logical switches%
-   exportprof0 = false;
-   exportprof = true;
-   showfig = false; % Keep it "false" with large series to avoid memory drainage
-   exportfig = true;
+%% Paths and files : declaration of variables
+ configfile = "";
+  configdir = "";
+       path = "";
+  exportdir = "";
 
-%% Parameters
-% epsilon = 3; % ratio between colour channels
-% cl_pair = [3, 2]; % the first element is the dominant colour, the second -- the submissive one: 1 - R, 2 - G, 3 - B
-% ROI = [1340,390,3930,2960];
-% center = [2630.5,1679.5];
-% R2 = 0.5 * 2764; % pix
-% windoww=24;
+lastrunfile = "lastrun.txt";
 
-exportdir = '';
-     path = '';
+% Misc
+batch_mode = true;
+skip_error = false;
+file_count = 0;
+error_count = 0;
 
-run(strcat(path,filesep,'../config.m'));
+%% Welcome Wizard
+welcome_wizard;
 
-%% More configuration
-if exportprof == true
-    %Check and selection of a directory for export%
-    if  exist('exportdir','var')==1 && ischar(exportdir)
-        exportdir=uigetdir(exportdir,'Where to save the resulting files?');
-    else
-        exportdir=uigetdir([],'Where to save the resulting files?');
-    end
-    %_%
+%% Prepare graphics
+if exportfig==true
+    scrsz = get(0,'ScreenSize');
 end
-%Import data%
-suffix='\w*.tif';
-if  exist('path','var')==1 && ischar(path)
-    path = uigetdir(path,'Select the directory');
-else
-    path = uigetdir([],'Select the directory');
-end
+
+%% Import data
+suffix = strcat('.',suffix);
 direc = dir([path,filesep,'*.*']);
-filenames={}; filenames1={};
+filenames = {}; 
+filenames1 = {};
 [filenames1{1:length(direc),1}] = deal(direc.name);
 cnt = 0;
 for i=1:length(filenames1)
-    if regexpi(filenames1{i},suffix) == 1
+    if regexpi(filenames1{i},suffix)==1
         cnt = cnt + 1;
         filenames(cnt,1) = filenames1(i);
     end
 end
 clearvars cnt filenames1
 filenames = sortrows(filenames); %sort all image files
-%_%
+
+%% Select the images range
+[Nstart, Nfiles] = range_select(filenames, 'images');
 
 %% Main program
-for i = 1:1:length(filenames)
-    [phi, r, fig, fig1] = ...
-        anlz_photo(path, filenames{i}, epsilon, cl_pair, ROI, center, R2, showfig, exportfig, exportprof0, exportdir);
-    % postprocess + export here
-    if exportfig==true
-        filename=filenames{i};
-%         if showfig==true
-        figure(fig);
-        if showfig==false 
-            set(fig,'Visible','off')
-        end
-        print(strcat(exportdir,filesep,filename,'.png'),'-dpng','-r300');
-    end
-    [phi_av,error1,r_av,error2]=local_average(phi',r',windoww,0);
-    phi_ed=linspace(-pi,pi,2000);
-    r_ed=interp1(phi_av,r_av,phi_ed,'spline','extrap');
-    if exportprof == true
-        filename=filenames{i};
-        export_averaged;
-        export_smoothed;
-    end
-    clc;
-    disp(['Processing files: ' int2str(round(i/length(filenames)*100,2)) ' %']);
+if runmode == "color"
+    runmode = "colour";
 end
-disp('We are done!');
+f = fopen(strcat(exportdir,filesep,"batch_processing.log"),"w");
+fprintf(f, "%s", "The program executed on ");
+fprintf(f, "%s\n", string(datetime));
+switch runmode
+    case "colour"
+        for i = Nstart:1:Nfiles
+            try
+                [phi, r, fig, fig1] = anlz_photo(path, filenames{i}, epsilon, cl_pair, ...
+                    ROI, center, R2, showfig, exportfig, exportprof0, do_circshift, exportdir);
+            catch
+                fprintf(f, "%s ;  %s\n", filenames{i}, "FAIL");
+                error_count = error_count + 1;
+                if ~skip_error
+                    handle_error;
+                    switch answer
+                        case 'Skip'
+                            continue
+                        case 'Skip all'
+                            skip_error = true;
+                            continue
+                        case 'Abort'
+                            msgbox('STOP: Operation aborted by user.')
+                            assert(false, 'STOP: Operation aborted by user.')
+                    end
+                else
+                    continue
+                end
+            end
+            fprintf(f, "%s ;  %s\n", filenames{i}, "Success!");
+            % postprocess & export here: %
+            subroutine_batch;
+        end
+    case "monochrome"
+        for i = Nstart:1:Nfiles
+            try
+                [phi, r, fig, fig1] = anlz_photo_bw(path, filenames{i}, epsilon, ROI, ...
+                    center, R2, showfig, exportfig, exportprof0, R_min, R_max, exportdir);
+            catch
+                fprintf(f, "%s ;  %s\n", filenames{i}, "FAIL");
+                error_count = error_count + 1;
+                if ~skip_error
+                    handle_error;
+                    switch answer
+                        case 'Skip'
+                            continue
+                        case 'Skip all'
+                            skip_error = true;
+                            continue
+                        case 'Abort'
+                            fclose(f);
+                            msgbox('STOP: Operation aborted by user.')
+                            assert(false, 'STOP: Operation aborted by user.')
+                    end
+                else
+                    continue
+                end
+            end
+            fprintf(f, "%s ;  %s\n", filenames{i}, "Success!");
+            % postprocess & export here: %
+            subroutine_batch;
+        end
+end
+fclose(f);
+disp('We are done!')
+fprintf("%s\n", "Summary:")
+fprintf("%g %s\n", Nfiles-Nstart+1-error_count, " of files sucessfully processed.")
+fprintf("%g %s\n", error_count, " of files skipped due to errors.")
+fprintf("%s\n", "For detail, see batch_processing.log in ", exportdir)

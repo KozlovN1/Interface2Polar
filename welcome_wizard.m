@@ -1,4 +1,4 @@
-% Version 0.9.4.3 (2025-02-26)
+% Version 0.9.5 (2025-03-02)
 % Nick Kozlov
 %Options and Parameters%
 if exist(lastrunfile, "file")==2
@@ -9,7 +9,7 @@ if exist(lastrunfile, "file")==2
     path = fgetl(lastrun);
 end
 
-if path ~= ""
+if exist('path','var')==1 && ischar(path) % path ~= ""
     path = uigetdir(path, "Directory containing images");
 else
     path = uigetdir(configdir, "Directory containing images");
@@ -19,7 +19,7 @@ end
 prompt = strcat(['Indicate the configuration file [Indicate], ' ...
     'or you may copy the template [Copy]']);
 dlgtitle = 'Retrieving the config file';
-defbtn = 'Copy';
+defbtn = 'Indicate';
 answer = questdlg(prompt,dlgtitle, ...
     'Indicate', 'Copy', 'Abort', defbtn);
 
@@ -74,7 +74,7 @@ end
 % end
 
 if exportprof==true || exportprof0==true || exportfig==true
-    if exportdir ~= ""
+    if exist('exportdir','var')==1 && ischar(exportdir) % exportdir ~= ""
         exportdir = uigetdir(exportdir, "Directory to save results");
     else
         exportdir = uigetdir(configdir, "Directory to save results");

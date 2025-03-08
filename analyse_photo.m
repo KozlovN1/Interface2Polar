@@ -1,5 +1,5 @@
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.4.2 (2025-02-26)
+% v.0.9.8.1 (2025-03-08)
 % Nick Kozlov
 
 %% Init
@@ -12,6 +12,9 @@ init_all;
   exportdir = "";
 
 lastrunfile = "lastrun.txt";
+
+% Misc
+batch_mode = false;
 
 %% Welcome Wizard
 welcome_wizard;
@@ -32,22 +35,22 @@ if runmode == "color"
 end
 switch runmode
     case "colour"
-        if exportprof0 == true
-            [phi, r, fig, fig1] = anlz_photo(path, filename, epsilon, cl_pair, ...
-                ROI, center, R2, showfig, exportfig, exportprof0, ...
-                do_circshift, exportdir);
-        else
+        if ~exportprof0
             [phi, r, fig, fig1] = anlz_photo(path, filename, epsilon, cl_pair, ...
                 ROI, center, R2, showfig, exportfig, exportprof0, ...
                 do_circshift);
+        else
+            [phi, r, fig, fig1] = anlz_photo(path, filename, epsilon, cl_pair, ...
+                ROI, center, R2, showfig, exportfig, exportprof0, ...
+                do_circshift, exportdir);
         end
     case "monochrome"
-        if exportprof0 == true
-            [phi, r, fig, fig1] = anlz_photo_bw(path, filename, epsilon, ROI, ...
-                center, R2, showfig, exportfig, exportprof0, R_min, R_max, exportdir);
-        else
+        if ~exportprof0
             [phi, r, fig, fig1] = anlz_photo_bw(path, filename, epsilon, ROI, ...
                 center, R2, showfig, exportfig, exportprof0, R_min, R_max);
+        else
+            [phi, r, fig, fig1] = anlz_photo_bw(path, filename, epsilon, ROI, ...
+                center, R2, showfig, exportfig, exportprof0, R_min, R_max, exportdir);
         end
 end
 
@@ -55,6 +58,8 @@ end
 [phi_av,error1,r_av,error2]=local_average(phi',r',windoww,0);
 phi_ed=linspace(-pi,pi,2000);
 r_ed=interp1(phi_av,r_av,phi_ed,'spline','extrap');
+% pp = csape(phi_av,r_av,'periodic'); % Curve Fitting Toolbox
+% r_ed = ppval(pp,phi_ed);            % Curve Fitting Toolbox
 
 % Visualization %
 if showfig == true

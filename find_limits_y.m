@@ -1,3 +1,6 @@
+% v.0.9.6 (2025-03-05)
+% Nick Kozlov
+
 deriv=zeros(ROI(4)-ROI(2),1);
 for j=center(2):1:ROI(4)-1
     deriv(j)=0.5*(image1(j,center(1),1)-image1(j-1,center(1),1)...
@@ -11,7 +14,7 @@ norm=mean(deriv);
 
 limit1=0;
 limit2=0;
-for j=center(2):1:ROI(4)
+for j=center(2):1:ROI(4)-1
     if limit1==0 && deriv(j)-norm>=epsilon
         limit1=j;
     end
@@ -24,7 +27,7 @@ max_y0=limit1-1+find(deriv(limit1:limit2)==max(deriv(limit1:limit2)),1);
 
 limit1=0;
 limit2=0;
-for j=center(2):-1:1
+for j=center(2):-1:1+1
     if limit1==0 && deriv(j)-norm>=epsilon
         limit1=j;
     end
