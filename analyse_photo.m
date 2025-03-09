@@ -1,5 +1,5 @@
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.9.1* (2025-03-09)
+% v.0.9.9.1 (2025-03-09)
 % Nick Kozlov
 
 %% Init
