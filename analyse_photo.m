@@ -1,5 +1,5 @@
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.9.1 (2025-03-09)
+% v.0.9.9.2 (2025-03-09)
 % Nick Kozlov
 
 %% Init
@@ -64,9 +64,12 @@ end
 % Post processing the profile %
 [phi_av,error1,r_av,error2] = local_average(phi',r',windoww,0);
 phi_ed = linspace(-pi,pi,resolution);
-r_ed = interp1(phi_av,r_av,phi_ed,'spline','extrap');
-% pp = csape(phi_av,r_av,'periodic'); % Curve Fitting Toolbox
-% r_ed = ppval(pp,phi_ed);            % Curve Fitting Toolbox
+try
+    pp = csape(phi_av,r_av,'periodic'); % Curve Fitting Toolbox
+    r_ed = ppval(pp,phi_ed);            % Curve Fitting Toolbox
+catch
+    r_ed = interp1(phi_av,r_av,phi_ed,'spline','extrap'); % Matlab standard library
+end
 
 % Visualization %
 if showfig == true
