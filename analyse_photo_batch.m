@@ -1,5 +1,5 @@
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.8 (2025-03-08)
+% v.0.9.9 (2025-03-09)
 % Nick Kozlov
 
 %% Init
@@ -18,6 +18,7 @@ batch_mode = true;
 skip_error = false;
 file_count = 0;
 error_count = 0;
+resolution = 2048;
 
 %% Welcome Wizard
 welcome_wizard;

@@ -1,4 +1,4 @@
-% v.0.9.8 (2025-03-08)
+% v.0.9.9 (2025-03-09)
 % Nick Kozlov
 
 %% %Options: logical switches%
@@ -19,6 +19,7 @@ windoww = 20; % argument passed to local_average (number of elements)
   R_min = 190; % used in monochrome mode
   R_max = 220; % used in monochrome mode
 % cl_pair = [3, 2]; % the first element is the dominant colour, the second -- the receding one: 1 - R, 2 - G, 3 - B
+resolution = 2048; % Resolution of the interpolated profile exported
 
 %% %Batch processing parameters%
 if batch_mode

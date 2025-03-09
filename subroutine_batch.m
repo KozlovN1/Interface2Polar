@@ -1,4 +1,4 @@
-% v.0.9.7 (2025-03-06)
+% v.0.9.9 (2025-03-09)
 % Nick Kozlov
 
 if exportfig==true
@@ -6,7 +6,7 @@ if exportfig==true
     print(fig,strcat(exportdir,filesep,filename,'.png'),'-dpng','-r300');
 end
 [phi_av,error1,r_av,error2] = local_average(phi',r',windoww,0);
-phi_ed = linspace(-pi,pi,2000);
+phi_ed = linspace(-pi,pi,resolution);
 r_ed = interp1(phi_av,r_av,phi_ed,'spline','extrap');
 if exportprof==true
     filename = filenames{i};

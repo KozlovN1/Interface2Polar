@@ -1,5 +1,5 @@
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.8.1 (2025-03-08)
+% v.0.9.9.1* (2025-03-09)
 % Nick Kozlov
 
 %% Init
@@ -15,6 +15,7 @@ lastrunfile = "lastrun.txt";
 
 % Misc
 batch_mode = false;
+resolution = 2048;
 
 %% Welcome Wizard
 welcome_wizard;
@@ -54,10 +55,16 @@ switch runmode
         end
 end
 
+% Not sure this will ever be usewful
+if isempty(r) || isempty(phi)
+    msgbox('Interface could not be found.','Error','error')
+    assert(false, 'STOP: Interface not found.')
+end
+
 % Post processing the profile %
-[phi_av,error1,r_av,error2]=local_average(phi',r',windoww,0);
-phi_ed=linspace(-pi,pi,2000);
-r_ed=interp1(phi_av,r_av,phi_ed,'spline','extrap');
+[phi_av,error1,r_av,error2] = local_average(phi',r',windoww,0);
+phi_ed = linspace(-pi,pi,resolution);
+r_ed = interp1(phi_av,r_av,phi_ed,'spline','extrap');
 % pp = csape(phi_av,r_av,'periodic'); % Curve Fitting Toolbox
 % r_ed = ppval(pp,phi_ed);            % Curve Fitting Toolbox
 
