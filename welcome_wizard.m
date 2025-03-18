@@ -1,4 +1,4 @@
-% Version 0.9.5 (2025-03-02)
+% Version 0.9.9.3 (2025-03-17)
 % Nick Kozlov
 %Options and Parameters%
 if exist(lastrunfile, "file")==2
@@ -39,6 +39,11 @@ switch answer
         status = copyfile('config_template.m', ...
             strcat(configdir, filesep, configfile));
         if status==1
+            % try
+            %     winopen(configdir);
+            % catch
+            % end
+            % finder(configdir,1);
             editfile = questdlg('Please edit the file. When done press NEXT.', ...
                 'Waiting for the edit ...','NEXT','Abort','NEXT');
             if editfile=="Abort"

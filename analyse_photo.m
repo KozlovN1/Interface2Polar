@@ -1,5 +1,5 @@
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.9.2 (2025-03-09)
+% v.0.9.10 (2025-03-18)
 % Nick Kozlov
 
 %% Init
@@ -53,12 +53,6 @@ switch runmode
             [phi, r, fig, fig1] = anlz_photo_bw(path, filename, epsilon, ROI, ...
                 center, R2, showfig, exportfig, exportprof0, R_min, R_max, exportdir);
         end
-end
-
-% Not sure this will ever be usewful
-if isempty(r) || isempty(phi)
-    msgbox('Interface could not be found.','Error','error')
-    assert(false, 'STOP: Interface not found.')
 end
 
 % Post processing the profile %

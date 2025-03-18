@@ -3,7 +3,7 @@ function [pphi, rr, fig, fig1] = ...
     R2, showfig, exportfig, exportprof, do_circshift, exportdir)
     
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.5 (2025-03-02)
+% v.0.9.10 (2025-03-18)
 % Nick Kozlov
     
     % Get the image
@@ -73,7 +73,7 @@ function [pphi, rr, fig, fig1] = ...
         end
         i=i-1;
     end
-    
+
     % Transfer to polar coordinates
     r=zeros(1,counter);
     phi=zeros(1,counter);
@@ -120,6 +120,13 @@ function [pphi, rr, fig, fig1] = ...
     % Remove the bad points
     r(isnan(r))=[];
     phi(isnan(phi))=[];
+    
+    % Check if any coordinate points were found and throw error if not
+    if isempty(r) || isempty(phi)
+        msgbox(['Interface could not be found. ' ...
+            'You may try different parameters or another image.'],'Error','error')
+        assert(false, 'STOP: Interface not found.')
+    end
 
     %%% Interpolation is necessary to remove "inclined" regions of profile
     % Remove non-unique values, thus enabling the interpolation
