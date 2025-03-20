@@ -1,13 +1,13 @@
 function [average1,error1,average2,error2]=local_average(vector1,vector2,windoww,step)
-
-%% Smoothing a vector by means of averaging data locally:
-% - check for missing data;
-% Updates:
-% - abs(vector1(RunAv)-vector1(RunAv+1))/step>=2
-% window --> windoww
+% Smoothes a vector by means of averaging data locally.
+% VibTechLib collection.
+% Version 1.0.2 (2023-10-01)
+% Nick Kozlov
 %
-% v. 1.0.2
-% 2023-10-01. Nick Kozlov
+% Updates:
+% - check for missing data;
+% - abs(vector1(RunAv)-vector1(RunAv+1))/step>=2
+% - window --> windoww
 
 if step==0
     testvector=zeros(size(vector1,1)-1,1);

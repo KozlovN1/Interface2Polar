@@ -1,4 +1,4 @@
-% v.0.9.9 (2025-03-09)
+% v.1.0 (2025-03-20)
 % Nick Kozlov
 
 if exportfig==true
@@ -31,4 +31,4 @@ if exportprof==true
 end
 clc;
 disp(['Processing files: ' ...
-    int2str(round((i-Nstart)/(Nfiles-Nstart)*100,2)) ' %']);
+    int2str(round((i-Nstart+1)/(Nfiles-Nstart+1)*100,2)) ' %']);

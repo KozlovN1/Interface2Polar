@@ -1,5 +1,6 @@
-%% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.10 (2025-03-18)
+% Obtaining coordinates of a circular interface in polar coordinates 
+% from a photograph.
+% v.1.0 (2025-03-20)
 % Nick Kozlov
 
 %% Init

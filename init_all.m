@@ -1,4 +1,6 @@
-% Version 0.9.4.2 (2025-02-26)
+% An initialization subroutine.
+% VibTechLib collection.
+% Version 1.5 (2025-02-26)
 % Nick Kozlov
 
 prompt = strcat('Do you want to CLEAN and restart over?');
