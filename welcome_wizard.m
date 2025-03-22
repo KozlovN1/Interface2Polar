@@ -1,4 +1,4 @@
-% Version 0.9.9.3 (2025-03-17)
+% Version 1.0 (2025-03-22)
 % Nick Kozlov
 %Options and Parameters%
 if exist(lastrunfile, "file")==2
@@ -36,14 +36,9 @@ switch answer
         configfile = string(inputdlg(prompt,dlgtitle,dims,definput));
         configdir = uigetdir(configdir, ...
             "Directory to copy the configuration template to");
-        status = copyfile('config_template.m', ...
+        status = copyfile(strcat(rundir,filesep,'config_template.m'), ...
             strcat(configdir, filesep, configfile));
         if status==1
-            % try
-            %     winopen(configdir);
-            % catch
-            % end
-            % finder(configdir,1);
             editfile = questdlg('Please edit the file. When done press NEXT.', ...
                 'Waiting for the edit ...','NEXT','Abort','NEXT');
             if editfile=="Abort"
@@ -65,18 +60,11 @@ run(strcat(configdir, filesep, configfile));
 
 %More configuration%
 if exist(lastrunfile, "file")==2
-    % path = fgetl(lastrun);
     if exportprof==true || exportprof0==true || exportfig==true
         exportdir = fgetl(lastrun);
     end
     fclose(lastrun);
 end
-
-% if path ~= ""
-%     path = uigetdir(path, "Directory containing images");
-% else
-%     path = uigetdir(configdir, "Directory containing images");
-% end
 
 if exportprof==true || exportprof0==true || exportfig==true
     if exist('exportdir','var')==1 && ischar(exportdir) % exportdir ~= ""

@@ -7,6 +7,7 @@
 init_all;
 
 %% Paths and files : declaration of variables
+     rundir = fileparts(mfilename("fullpath"));
  configfile = "";
   configdir = "";
        path = "";
