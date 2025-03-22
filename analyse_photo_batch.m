@@ -1,6 +1,6 @@
 % Obtaining coordinates of a circular interface in polar coordinates 
 % from a photograph. Batch processing.
-% v.1.0 (2025-03-20)
+% v.1.0 (2025-03-22)
 % Nick Kozlov
 
 %% Init
