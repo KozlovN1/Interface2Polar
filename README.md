@@ -31,3 +31,7 @@ b) In monochrome mode, optional parameters R_min and R_max allow the user narrow
 
 
 Examples of all of the parameters are given in config_template.m. Upon the first run of the program, a wizard provides you with an option to copy this template or to select a pre-configured file.
+
+
+
+The program was applied for processing images in experimental work [Kozlov V. G., Zimasova A. R., Kozlov N. V. Stability of liquid-liquid interface in unevenly rotating horizontal cylinder // Interfacial Phenomena and Heat Transfer. 2024. Vol. 12. Iss. 1. P. 63–74. DOI: 10.1615/InterfacPhenomHeatTransfer.2023050051].
