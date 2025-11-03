@@ -34,4 +34,8 @@ Examples of all of the parameters are given in config_template.m. Upon the first
 
 
 
-The program was applied for processing images in experimental work [Kozlov V. G., Zimasova A. R., Kozlov N. V. Stability of liquid-liquid interface in unevenly rotating horizontal cylinder // Interfacial Phenomena and Heat Transfer. 2024. Vol. 12. Iss. 1. P. 63–74. DOI: 10.1615/InterfacPhenomHeatTransfer.2023050051].
+The program was applied for processing images in experimental works: 
+
+[Kozlov V. G., Zimasova A. R., Kozlov N. V. Stability of liquid-liquid interface in unevenly rotating horizontal cylinder // Interfacial Phenomena and Heat Transfer. 2024. Vol. 12. Iss. 1. P. 63–74. DOI: 10.1615/InterfacPhenomHeatTransfer.2023050051],
+
+[Kozlov N., Kozlova A., Viviani A., Kozlov V. Oscillatory Kelvin–Helmholtz instability in horizontal radial Hele-Shaw cell at modulated rotation: effect of gravity field // Experiments in Fluids. 2025. Vol. 66. Article 209. DOI: 10.1007/s00348-025-04142-6].
