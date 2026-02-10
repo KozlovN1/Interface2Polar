@@ -1,10 +1,10 @@
-% v.1.2 (2025-12-01)
+% v.1.4.2 (2026-02-10)
 % Nick Kozlov
 
 %% %Options: logical switches%
-    showfig = true; % [true, false]
- exportprof = true; % triggers export_average & export_smooth, the profiles for practical use
-  exportfig = true;
+    do_showfig = true; % [true, false]
+ do_exportprof = true; % triggers export_average & export_smooth, the profiles for practical use
+  do_exportfig = true;
 
 %% %Basic configuration%
  suffix = "*.tif";
@@ -30,4 +30,4 @@ end
 %% %Testing parameters%
 do_circshift = false;
 % Below: usually not needed
-exportprof0 = false; % triggers the export of interface profile within anlz_photo, the noisy one
+do_exportprof0 = false; % triggers the export of interface profile within anlz_photo, the noisy one

@@ -1,4 +1,4 @@
-% Version 1.4.1 (2026-02-10)
+% Version 1.4.2 (2026-02-10)
 % Nick Kozlov
 %Options and Parameters%
 if exist(lastrunfile, "file")==2
@@ -109,13 +109,13 @@ run(strcat(configdir, filesep, configfile));
 
 %More configuration%
 if exist(lastrunfile, "file")==2
-    if exportprof==true || exportprof0==true || exportfig==true
+    if do_exportprof==true || do_exportprof0==true || do_exportfig==true
         exportdir = fgetl(lastrun);
     end
     fclose(lastrun);
 end
 
-if exportprof==true || exportprof0==true || exportfig==true
+if do_exportprof==true || do_exportprof0==true || do_exportfig==true
     if exist('exportdir','var')==1 && length(exportdir)>1 % exportdir~=0 % string(exportdir)~="" % ischar(exportdir)
         % fprintf("exportdir: %s\n", exportdir) % DEBUG
         exportdir = uigetdir(exportdir, "Directory to save results");

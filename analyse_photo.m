@@ -1,7 +1,7 @@
 function analyse_photo()
 % Obtaining coordinates of a circular interface in polar coordinates 
 % from a photograph.
-% v.1.2 (2025-12-01)
+% v.1.4.2 (2026-02-10)
 % Nick Kozlov
 
 %% Init
@@ -39,22 +39,22 @@ if runmode == "color"
 end
 switch runmode
     case "colour"
-        if ~exportprof0
+        if ~do_exportprof0
             [phi, r, fig, fig1] = anlz_photo(path, filename, epsilon, cl_pair, ...
-                ROI, center, R2, showfig, exportfig, exportprof0, ...
+                ROI, center, R2, do_showfig, do_exportfig, do_exportprof0, ...
                 do_circshift, scandirection, R_min, R_max);
         else
             [phi, r, fig, fig1] = anlz_photo(path, filename, epsilon, cl_pair, ...
-                ROI, center, R2, showfig, exportfig, exportprof0, ...
+                ROI, center, R2, do_showfig, do_exportfig, do_exportprof0, ...
                 do_circshift, scandirection, R_min, R_max, exportdir);
         end
     case "monochrome"
-        if ~exportprof0
+        if ~do_exportprof0
             [phi, r, fig, fig1] = anlz_photo_bw(path, filename, epsilon, ROI, ...
-                center, R2, showfig, exportfig, exportprof0, R_min, R_max);
+                center, R2, do_showfig, do_exportfig, do_exportprof0, R_min, R_max);
         else
             [phi, r, fig, fig1] = anlz_photo_bw(path, filename, epsilon, ROI, ...
-                center, R2, showfig, exportfig, exportprof0, R_min, R_max, exportdir);
+                center, R2, do_showfig, do_exportfig, do_exportprof0, R_min, R_max, exportdir);
         end
 end
 
@@ -69,7 +69,7 @@ catch
 end
 
 % Visualization %
-if showfig == true
+if do_showfig == true
     figure(fig1);
     subplot(2,1,2);
     hold on;
@@ -91,16 +91,16 @@ if showfig == true
 end
 
 % Export the post-processed data %
-if exportprof == true
+if do_exportprof == true
     export_averaged;
     export_smoothed;
 end
 
 % Export the photo with the profile %
-if exportfig==true
-%     if showfig==true
+if do_exportfig==true
+%     if do_showfig==true
     figure(fig);
-    if showfig==false 
+    if do_showfig==false 
         set(fig,'Visible','off')
     end
     print(strcat(exportdir,filesep,filename,'.png'),'-dpng','-r300');
