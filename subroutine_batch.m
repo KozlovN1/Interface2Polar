@@ -1,18 +1,18 @@
-% v.1.0 (2025-03-20)
+% v.1.4.2 (2026-02-10)
 % Nick Kozlov
 
-if exportfig==true
+if do_exportfig==true
     filename = filenames{i};
     print(fig,strcat(exportdir,filesep,filename,'.png'),'-dpng','-r300');
 end
 [phi_av,error1,r_av,error2] = local_average(phi',r',windoww,0);
 phi_ed = linspace(-pi,pi,resolution);
 r_ed = interp1(phi_av,r_av,phi_ed,'spline','extrap');
-if exportprof==true
+if do_exportprof==true
     filename = filenames{i};
     export_averaged;
 
-    if showfig==false 
+    if do_showfig==false 
         fig2 = figure('Position',[0 0 scrsz(3) scrsz(4)], ...
             'Name', strcat('Azimuthal profiles: ',filename),'Visible','off');
     else

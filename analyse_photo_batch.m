@@ -1,6 +1,7 @@
+function analyse_photo_batch()
 % Obtaining coordinates of a circular interface in polar coordinates 
 % from a photograph. Batch processing.
-% v.1.0 (2025-03-22)
+% v.1.4.2 (2026-02-10)
 % Nick Kozlov
 
 %% Init
@@ -26,7 +27,7 @@ resolution = 2048;
 welcome_wizard;
 
 %% Prepare graphics
-if exportfig==true
+if do_exportfig==true
     scrsz = get(0,'ScreenSize');
 end
 
@@ -61,7 +62,8 @@ switch runmode
         for i = Nstart:1:Nfiles
             try
                 [phi, r, fig, fig1] = anlz_photo(path, filenames{i}, epsilon, cl_pair, ...
-                    ROI, center, R2, showfig, exportfig, exportprof0, do_circshift, exportdir);
+                    ROI, center, R2, do_showfig, do_exportfig, do_exportprof0, do_circshift, ...
+                    scandirection, R_min, R_max, exportdir);
             catch
                 fprintf(f, "%s ;  %s\n", filenames{i}, "FAIL");
                 error_count = error_count + 1;
@@ -89,7 +91,7 @@ switch runmode
         for i = Nstart:1:Nfiles
             try
                 [phi, r, fig, fig1] = anlz_photo_bw(path, filenames{i}, epsilon, ROI, ...
-                    center, R2, showfig, exportfig, exportprof0, R_min, R_max, exportdir);
+                    center, R2, do_showfig, do_exportfig, do_exportprof0, R_min, R_max, exportdir);
             catch
                 fprintf(f, "%s ;  %s\n", filenames{i}, "FAIL");
                 error_count = error_count + 1;
