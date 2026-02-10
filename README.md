@@ -1,4 +1,8 @@
+Version 1.4.1 - 2026-02-10
+
 The program reconstructs an azimuthal profile of a circular or close-ended interface from photographic images into polar coordinates. It can run in single or batch mode.
+
+The usual technique for retrieving the interface between coloured and uncoloured liquids: scan from the clear fluid in the direction of the dyed one (see 'scandirection' below) and check the prescribed epsilon criterion (see 'epsilon' below). Doing the opposite way is allowed, but often less efficient.
 
 In order to run the analysis of a photograph you will need to set the processing parameters via a configuration file.
 
@@ -9,11 +13,13 @@ a) The most important parameter is epsilon that characterizes ratio between colo
 
 b) R2 is the characteristic size of the image in pixels.
 
-c) In coulour mode, parameter cl_pair lets one select two colour channels that are going to be compared for the interface criterion: epsilon is compared to cl_pair(,,1)/cl_pair(,,2).
+c) In colour mode, parameter cl_pair lets one select two colour channels that are going to be compared for the interface criterion: epsilon is compared to cl_pair(,,1)/cl_pair(,,2).
 
 d) Parameter windoww permits to tune the averaging of the obtained azimuthal profile.
 
 e) suffix, runmode.
+
+f) scandirection is necessary to select between 'inwards' (from perimeter towards the center) and 'outwards' (from the center towards perimeter) (since v. 1.4.1, only if runmode=='colour')
 
 
 - Parameters with default values:
@@ -27,15 +33,14 @@ b) do_circshift, exportprof0 are technical.
 
 a) You will also need the coordinates of the origin (usually the center of the experimental cell) and region of interest, unless your image is preliminary centered and trimmed. In the latter case these parameters may be measured from an image automatically.
 
-b) In monochrome mode, optional parameters R_min and R_max allow the user narrowing the region of seeking the interface. They may be empty.
+b) Optional parameters R_min and R_max allow the user narrowing the region of interest where to seek for the interface. They may be empty.
 
 
 Examples of all of the parameters are given in config_template.m. Upon the first run of the program, a wizard provides you with an option to copy this template or to select a pre-configured file.
 
 
-
-The program was applied for processing images in experimental works: 
+The program was applied for processing images in experimental works:
 
 [Kozlov V. G., Zimasova A. R., Kozlov N. V. Stability of liquid-liquid interface in unevenly rotating horizontal cylinder // Interfacial Phenomena and Heat Transfer. 2024. Vol. 12. Iss. 1. P. 63–74. DOI: 10.1615/InterfacPhenomHeatTransfer.2023050051],
 
-[Kozlov N., Kozlova A., Viviani A., Kozlov V. Oscillatory Kelvin–Helmholtz instability in horizontal radial Hele-Shaw cell at modulated rotation: effect of gravity field // Experiments in Fluids. 2025. Vol. 66. Article 209. DOI: 10.1007/s00348-025-04142-6].
+[Kozlov N., Kozlova A., Viviani A., Kozlov V. Oscillatory Kelvin–Helmholtz instability in horizontal radial Hele-Shaw cell at modulated rotation: effect of gravity field // Experiments in Fluids. 2025. Vol. 66. Article 209. DOI: 10.1007/s00348-025-04142-6].
