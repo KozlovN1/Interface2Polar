@@ -3,7 +3,7 @@ function [pphi, rr, fig, fig1] = ...
     R2, showfig, exportfig, exportprof, R_min, R_max, exportdir)
     
 %% Obtaining interface coordinates from a grayscale photograph.
-% v.0.9.1.1 (2024-08-02)
+% v.0.9.10 (2025-03-18)
 % Nick Kozlov
     
     % Get the image
@@ -197,6 +197,13 @@ function [pphi, rr, fig, fig1] = ...
 %         % Show me what you've got
 %         figure('Name','DEBUG'); % DEBUG
 %         plot(phi,r); %DEBUG
+
+    % Check if any coordinate points were found and throw error if not
+    if isempty(r) || isempty(phi)
+        msgbox(['Interface could not be found. ' ...
+            'You may try different parameters or another image.'],'Error','error')
+        assert(false, 'STOP: Interface not found.')
+    end
 
     %%% Interpolation is necessary to remove "inclined" regions of profile
     % Remove non-unique values, thus enabling the interpolation

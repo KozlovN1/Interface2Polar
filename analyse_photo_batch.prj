@@ -1,25 +1,25 @@
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
-  <configuration build-checksum="89079478" file="/home/nk/MATLAB/Interface2Polar_mlapp/analyse_photo.prj" location="/home/nk/MATLAB/Interface2Polar_mlapp" name="analyse_photo" target="target.mlapps" target-name="Package App">
-    <param.appname>analyse_photo</param.appname>
+  <configuration build-checksum="2402897899" file="/home/nk/MATLAB/Interface2Polar_mlapp/analyse_photo_batch.prj" location="/home/nk/MATLAB/Interface2Polar_mlapp" name="analyse_photo_batch" target="target.mlapps" target-name="Package App">
+    <param.appname>analyse_photo_batch</param.appname>
     <param.authnamewatermark>Nick Kozlov</param.authnamewatermark>
     <param.email>nick.kzlv@gmail.com</param.email>
     <param.company />
-    <param.icon>${PROJECT_ROOT}/analyse_photo_resources/icon_24.png</param.icon>
+    <param.icon>${PROJECT_ROOT}/analyse_photo_batch_resources/icon_24.png</param.icon>
     <param.icons>
-      <file>${PROJECT_ROOT}/analyse_photo_resources/icon_48.png</file>
-      <file>${PROJECT_ROOT}/analyse_photo_resources/icon_24.png</file>
-      <file>${PROJECT_ROOT}/analyse_photo_resources/icon_16.png</file>
+      <file>${PROJECT_ROOT}/analyse_photo_batch_resources/icon_48.png</file>
+      <file>${PROJECT_ROOT}/analyse_photo_batch_resources/icon_24.png</file>
+      <file>${PROJECT_ROOT}/analyse_photo_batch_resources/icon_16.png</file>
     </param.icons>
-    <param.summary>Reconstruct profile of a circular or close-ended interface in polar coordinates</param.summary>
-    <param.description>Reconstruct profile of a circular or close-ended interface in polar coordinates</param.description>
-    <param.screenshot>${PROJECT_ROOT}/logo256.png</param.screenshot>
+    <param.summary>Reconstruct profile of a circular or close-ended interface in polar coordinates.</param.summary>
+    <param.description>Reconstruct profile of a circular or close-ended interface in polar coordinates.</param.description>
+    <param.screenshot>${PROJECT_ROOT}/logo_batch256.png</param.screenshot>
     <param.version>1.4.1</param.version>
     <param.products.name />
     <param.products.id />
     <param.products.version />
     <param.platforms />
     <param.output>${PROJECT_ROOT}</param.output>
-    <param.guid>95e2393c-db49-4bcd-91a2-3d997fe0cece</param.guid>
+    <param.guid>14c015e2-2945-45eb-9595-5d059379378f</param.guid>
     <unset>
       <param.company />
       <param.products.name />
@@ -29,7 +29,7 @@
       <param.output />
     </unset>
     <fileset.main>
-      <file>${PROJECT_ROOT}/analyse_photo.m</file>
+      <file>${PROJECT_ROOT}/analyse_photo_batch.m</file>
     </fileset.main>
     <fileset.depfun>
       <file>${PROJECT_ROOT}/anlz_photo.m</file>
@@ -38,8 +38,11 @@
       <file>${PROJECT_ROOT}/export_smoothed.m</file>
       <file>${PROJECT_ROOT}/find_limits_x.m</file>
       <file>${PROJECT_ROOT}/find_limits_y.m</file>
+      <file>${PROJECT_ROOT}/handle_error.m</file>
       <file>${PROJECT_ROOT}/init_all.m</file>
       <file>${PROJECT_ROOT}/local_average.m</file>
+      <file>${PROJECT_ROOT}/range_select.m</file>
+      <file>${PROJECT_ROOT}/subroutine_batch.m</file>
       <file>${PROJECT_ROOT}/welcome_wizard.m</file>
     </fileset.depfun>
     <fileset.resources>

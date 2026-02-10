@@ -1,9 +1,10 @@
 function [pphi, rr, fig, fig1] = ...
     anlz_photo(path, filename, epsilon, cl_pair, ROI, center, ...
-    R2, showfig, exportfig, exportprof, do_circshift, exportdir)
+    R2, showfig, exportfig, exportprof, do_circshift, scandirection, ...
+    R_min, R_max, exportdir)
     
 %% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.1 (2023-07-23)
+% v.1.2 (2025-12-01)
 % Nick Kozlov
     
     % Get the image
@@ -16,65 +17,133 @@ function [pphi, rr, fig, fig1] = ...
     if isempty(center)
         center = [0.5*size(image1,2), 0.5*size(image1,2)]; % ???
     end
+    if isempty(R_min)
+        R_min=0;
+    end
+    if isempty(R_max)
+        R_max=R2;
+    elseif R_max==0 || R_max<=R_min
+        R_max=R2;
+    end
     
-    % Find the interface
+    %% Find the interface
     counter=0;
-    % scan left to right
-    for j=ROI(2):1:ROI(4)
-        for i=ROI(1):1:center(1)
-            if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
-                counter=counter+1;
-                xintfc(counter)=i;
-                yintfc(counter)=j;
-                break;
+    switch scandirection
+        case "inwards"
+            % scan left to right
+            for j=ROI(2):1:ROI(4)
+                for i=ROI(1):1:center(1)
+                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                        counter=counter+1;
+                        xintfc(counter)=i;
+                        yintfc(counter)=j;
+                        break;
+                    end
+                end
             end
-        end
-    end
-    % scan upwards
-    for i=ROI(1):1:ROI(3)
-        j=ROI(4);
-        while j>center(2)
-            if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
-                counter=counter+1;
-                xintfc(counter)=i;
-                yintfc(counter)=j;
-                break;
+            % scan upwards
+            for i=ROI(1):1:ROI(3)
+                j=ROI(4);
+                while j>center(2)
+                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                        counter=counter+1;
+                        xintfc(counter)=i;
+                        yintfc(counter)=j;
+                        break;
+                    end
+                    j=j-1;
+                end
             end
-            j=j-1;
-        end
-    end
-    % scan rigth to left
-    j=ROI(4);
-    while j>ROI(2)
-        i=ROI(3);
-        while i>center(1)
-            if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
-                counter=counter+1;
-                xintfc(counter)=i;
-                yintfc(counter)=j;
-                break;
+            % scan rigth to left
+            j=ROI(4);
+            while j>ROI(2)
+                i=ROI(3);
+                while i>center(1)
+                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                        counter=counter+1;
+                        xintfc(counter)=i;
+                        yintfc(counter)=j;
+                        break;
+                    end
+                    i=i-1;
+                end
+                j=j-1;
             end
-            i=i-1;
-        end
-        j=j-1;
-    end
-    % scan downwards
-    i=ROI(3);
-    while i>=ROI(1)
-        j=ROI(2);
-        while j<center(2)
-            if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
-                counter=counter+1;
-                xintfc(counter)=i;
-                yintfc(counter)=j;
-                break;
+            % scan downwards
+            i=ROI(3);
+            while i>=ROI(1)
+                j=ROI(2);
+                while j<center(2)
+                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                        counter=counter+1;
+                        xintfc(counter)=i;
+                        yintfc(counter)=j;
+                        break;
+                    end
+                    j=j+1;
+                end
+                i=i-1;
             end
-            j=j+1;
-        end
-        i=i-1;
+        case "outwards"
+            % scan from center to the left
+            for j=ROI(2):1:ROI(4)
+                for i=center(1):-1:ROI(1)
+                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                        if i == center(1)
+                            break;
+                        end
+                        counter=counter+1;
+                        xintfc(counter)=i;
+                        yintfc(counter)=j;
+                        break;
+                    end
+                end
+            end
+            % scan from center downwards
+            for i=ROI(1):1:ROI(3)
+                for j=center(2):1:ROI(4)
+                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                        if j == center(2)
+                            break;
+                        end
+                        counter=counter+1;
+                        xintfc(counter)=i;
+                        yintfc(counter)=j;
+                        break;
+                    end
+                end
+            end
+            % scan from center to the right
+            for j=ROI(2):1:ROI(4)
+                for i=center(1):1:ROI(3)
+                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                        if i == center(1)
+                            break;
+                        end
+                        counter=counter+1;
+                        xintfc(counter)=i;
+                        yintfc(counter)=j;
+                        break;
+                    end
+                end
+            end
+            % scan from center upwards
+            for i=ROI(1):1:ROI(3)
+                for j=center(2):-1:ROI(2)
+                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                        if j == center(2)
+                            break;
+                        end
+                        counter=counter+1;
+                        xintfc(counter)=i;
+                        yintfc(counter)=j;
+                        break;
+                    end
+                end
+            end
     end
-    
-    % Transfer to polar coordinates
+
+    %% Transfer to polar coordinates
     r=zeros(1,counter);
     phi=zeros(1,counter);
     fid50=fopen(strcat(path,filesep,'../report.txt'),'w'); % DEBUG
@@ -82,6 +151,16 @@ function [pphi, rr, fig, fig1] = ...
     for i=1:1:counter
         % let's skip the near-wall (fake) interface points %
         if (1-sqrt((xintfc(i)-center(1))^2+(yintfc(i)-center(2))^2)/R2)<0.01
+            fprintf(fid50,'bad point detected\n'); % DEBUG
+            r(i)=NaN;
+            phi(i)=NaN;
+            continue
+        elseif sqrt((xintfc(i)-center(1))^2+(yintfc(i)-center(2))^2)<R_min
+            fprintf(fid50,'bad point detected\n'); % DEBUG
+            r(i)=NaN;
+            phi(i)=NaN;
+            continue
+        elseif sqrt((xintfc(i)-center(1))^2+(yintfc(i)-center(2))^2)>R_max
             fprintf(fid50,'bad point detected\n'); % DEBUG
             r(i)=NaN;
             phi(i)=NaN;
@@ -120,6 +199,13 @@ function [pphi, rr, fig, fig1] = ...
     % Remove the bad points
     r(isnan(r))=[];
     phi(isnan(phi))=[];
+    
+    % Check if any coordinate points were found and throw error if not
+    if isempty(r) || isempty(phi)
+        msgbox(['Interface could not be found. ' ...
+            'You may try different parameters or another image.'],'Error','error')
+        assert(false, 'STOP: Interface not found.')
+    end
 
     %%% Interpolation is necessary to remove "inclined" regions of profile
     % Remove non-unique values, thus enabling the interpolation
@@ -148,17 +234,17 @@ function [pphi, rr, fig, fig1] = ...
     
     % Interpolate the azimuthal interface profile
     nsteps = ceil( 0.01*length(rrr) )*100;
-    fprintf('%s %d\n','length(rrr) = ',length(rrr)) % DEBUG %
-    fprintf('%s %d\n','nsteps = ',nsteps) % DEBUG %
-    fprintf('%s','find(isnan(rrr)) = ')   % DEBUG %
-    find(isnan(rrr))                      % DEBUG %
+    % fprintf('%s %d\n','length(rrr) = ',length(rrr)) % DEBUG %
+    % fprintf('%s %d\n','nsteps = ',nsteps) % DEBUG %
+    % fprintf('%s','find(isnan(rrr)) = ')   % DEBUG %
+    % find(isnan(rrr))                      % DEBUG %
     % Below: I do not know why I had to subtract 2 steps from pi, but it
     % works => TEMPORARY WORKAROUND
     % pphi = linspace(-pi,pi*(1-2*2/nsteps), nsteps );
     % pphi = linspace(-pi,pi-2*pi/nsteps, nsteps );
     pphi = linspace(-pi,pi, nsteps );
-    fprintf('%s','find(isnan(pphi)) = ')     % DEBUG %
-    find(isnan(pphi))                        % DEBUG %
+    % fprintf('%s','find(isnan(pphi)) = ')     % DEBUG %
+    % find(isnan(pphi))                        % DEBUG %
     if do_circshift == false
         rr = interp1( ppphi,rrr,pphi,'linear','extrap');
     else
@@ -177,8 +263,8 @@ function [pphi, rr, fig, fig1] = ...
         rrr1 = circshift(rrr,K);
         pphi1 = circshift(pphi,K);
         rr1 = interp1(ppphi1,rrr1,pphi,'linear');
-        fprintf('%s','find(isnan(rr1)) = ')      % DEBUG %
-        find(isnan(rr1))                         % DEBUG %
+        % fprintf('%s','find(isnan(rr1)) = ')      % DEBUG %
+        % find(isnan(rr1))                         % DEBUG %
     
         rr = interp1( ppphi,rrr,pphi,'linear');
         % rr = interp1( pphi,circshift(rr1,-K),pphi,'linear');
@@ -188,8 +274,8 @@ function [pphi, rr, fig, fig1] = ...
         rr = (rr + circshift(rr1,-K))/2;
         % rr = circshift(rr1,-K);
     end
-    fprintf('%s','AGAIN find(isnan(rr)) = ') % DEBUG %
-    find(isnan(rr))                          % DEBUG %
+    % fprintf('%s','AGAIN find(isnan(rr)) = ') % DEBUG %
+    % find(isnan(rr))                          % DEBUG %
     %_%
     % Median filter could be applied here to make the profile smoother
     %_%
@@ -219,8 +305,9 @@ function [pphi, rr, fig, fig1] = ...
             xlabel('\phi/\pi'); ylabel('{\it h}/{\it R}_2');
     elseif showfig==false && exportfig==true
         scrsz = get(0,'ScreenSize');
-        fig = figure('Name', strcat('Photo: ',filename) ,'Position',[0 0 0.5*scrsz(3) scrsz(4)]);
-        set(fig,'Visible','off');
+        fig = figure('Name', strcat('Photo: ',filename), ...
+            'Position',[0 0 0.5*scrsz(3) scrsz(4)],'Visible','off');
+        % set(fig,'Visible','off');
         image(image1);
         axis image;
         hold on;

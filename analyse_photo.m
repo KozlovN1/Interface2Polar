@@ -1,19 +1,24 @@
 function analyse_photo()
-
-%% Obtaining an interface coordinates from a colour photograph.
-% v.0.9.4.1 (2025-02-25)
+% Obtaining coordinates of a circular interface in polar coordinates 
+% from a photograph.
+% v.1.2 (2025-12-01)
 % Nick Kozlov
 
 %% Init
 init_all;
 
 %% Paths and files : declaration of variables
+     rundir = fileparts(mfilename("fullpath"));
  configfile = "";
   configdir = "";
        path = "";
   exportdir = "";
 
 lastrunfile = "lastrun.txt";
+
+% Misc
+batch_mode = false;
+resolution = 2048;
 
 %% Welcome Wizard
 welcome_wizard;
@@ -34,29 +39,34 @@ if runmode == "color"
 end
 switch runmode
     case "colour"
-        if exportprof0 == true
+        if ~exportprof0
             [phi, r, fig, fig1] = anlz_photo(path, filename, epsilon, cl_pair, ...
                 ROI, center, R2, showfig, exportfig, exportprof0, ...
-                do_circshift, exportdir);
+                do_circshift, scandirection, R_min, R_max);
         else
             [phi, r, fig, fig1] = anlz_photo(path, filename, epsilon, cl_pair, ...
                 ROI, center, R2, showfig, exportfig, exportprof0, ...
-                do_circshift);
+                do_circshift, scandirection, R_min, R_max, exportdir);
         end
     case "monochrome"
-        if exportprof0 == true
-            [phi, r, fig, fig1] = anlz_photo_bw(path, filename, epsilon, ROI, ...
-                center, R2, showfig, exportfig, exportprof0, R_min, R_max, exportdir);
-        else
+        if ~exportprof0
             [phi, r, fig, fig1] = anlz_photo_bw(path, filename, epsilon, ROI, ...
                 center, R2, showfig, exportfig, exportprof0, R_min, R_max);
+        else
+            [phi, r, fig, fig1] = anlz_photo_bw(path, filename, epsilon, ROI, ...
+                center, R2, showfig, exportfig, exportprof0, R_min, R_max, exportdir);
         end
 end
 
 % Post processing the profile %
-[phi_av,error1,r_av,error2]=local_average(phi',r',windoww,0);
-phi_ed=linspace(-pi,pi,2000);
-r_ed=interp1(phi_av,r_av,phi_ed,'spline','extrap');
+[phi_av,error1,r_av,error2] = local_average(phi',r',windoww,0);
+phi_ed = linspace(-pi,pi,resolution);
+try
+    pp = csape(phi_av,r_av,'periodic'); % Curve Fitting Toolbox
+    r_ed = ppval(pp,phi_ed);            % Curve Fitting Toolbox
+catch
+    r_ed = interp1(phi_av,r_av,phi_ed,'spline','extrap'); % Matlab standard library
+end
 
 % Visualization %
 if showfig == true
