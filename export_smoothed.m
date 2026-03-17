@@ -1,4 +1,4 @@
-% v.1.0 (2025-03-20)
+% v.1.4.3 (2026-03-17)
 % Nick Kozlov
 
 fid = fopen(strcat(exportdir,filesep,strcat(filename,'.csv') ),'w');
@@ -20,4 +20,8 @@ fclose(fid);
 % title('Azimuthal profile');
 % xlabel('\phi/\pi'); 
 % ylabel('{\it h}/{\it R}_2');
-print(strcat(exportdir,filesep,filename,'_profile.svg'),'-dsvg','-vector');
+try
+    print(fig2,strcat(exportdir,filesep,filename,'_profile.svg'),'-vector','-dsvg');
+catch
+    print(fig2,strcat(exportdir,filesep,filename,'_profile.svg'),'-painters','-dsvg');
+end

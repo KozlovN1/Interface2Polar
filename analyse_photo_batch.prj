@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
-  <configuration build-checksum="1012653601" file="/home/nk/MATLAB/Interface2Polar_mlapp/analyse_photo_batch.prj" location="/home/nk/MATLAB/Interface2Polar_mlapp" name="analyse_photo_batch" target="target.mlapps" target-name="Package App">
+  <configuration build-checksum="4225811210" file="/home/nk/MATLAB/Interface2Polar_mlapp/analyse_photo_batch.prj" location="/home/nk/MATLAB/Interface2Polar_mlapp" name="analyse_photo_batch" target="target.mlapps" target-name="Package App">
     <param.appname>analyse_photo_batch</param.appname>
     <param.authnamewatermark>Nick Kozlov</param.authnamewatermark>
     <param.email>nick.kzlv@gmail.com</param.email>
@@ -13,7 +13,7 @@
     <param.summary>Reconstruct profile of a circular or close-ended interface in polar coordinates.</param.summary>
     <param.description>Reconstruct profile of a circular or close-ended interface in polar coordinates.</param.description>
     <param.screenshot>${PROJECT_ROOT}/logo_batch256.png</param.screenshot>
-    <param.version>1.4.2</param.version>
+    <param.version>1.4.3</param.version>
     <param.products.name />
     <param.products.id />
     <param.products.version />
@@ -66,7 +66,7 @@
       <vista>false</vista>
       <linux>true</linux>
       <solaris>false</solaris>
-      <osver>5.4.0-163-generic</osver>
+      <osver>5.15.0-139-generic</osver>
       <os32>false</os32>
       <os64>true</os64>
       <arch>glnxa64</arch>
