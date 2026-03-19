@@ -19,7 +19,7 @@ d) Parameter windoww permits to tune the averaging of the obtained azimuthal pro
 
 e) suffix, runmode.
 
-f) scandirection is necessary to select between 'inwards' (from perimeter towards the center) and 'outwards' (from the center towards perimeter) (since v. 1.4.1, only if runmode=='colour')
+f) scandirection is necessary to select between 'inwards' (from perimeter towards the center) and 'outwards' (from the center towards perimeter) (since v. 1.4)
 
 
 - Parameters with default values:
