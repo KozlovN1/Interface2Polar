@@ -1,4 +1,4 @@
-Version 1.4.1 - 2026-02-10
+Version 1.4 - 2026-02-10
 
 The program reconstructs an azimuthal profile of a circular or close-ended interface from photographic images into polar coordinates. It can run in single or batch mode.
 
