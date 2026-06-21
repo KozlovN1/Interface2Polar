@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
-  <configuration build-checksum="4225811210" file="/home/nk/MATLAB/Interface2Polar_mlapp/analyse_photo_batch.prj" location="/home/nk/MATLAB/Interface2Polar_mlapp" name="analyse_photo_batch" target="target.mlapps" target-name="Package App">
+  <configuration build-checksum="2329239876" file="/home/nk/MATLAB/Interface2Polar_mlapp/src/analyse_photo_batch.prj" location="/home/nk/MATLAB/Interface2Polar_mlapp/src" name="analyse_photo_batch" target="target.mlapps" target-name="Package App">
     <param.appname>analyse_photo_batch</param.appname>
     <param.authnamewatermark>Nick Kozlov</param.authnamewatermark>
     <param.email>nick.kzlv@gmail.com</param.email>
@@ -18,7 +18,7 @@
     <param.products.id />
     <param.products.version />
     <param.platforms />
-    <param.output>${PROJECT_ROOT}</param.output>
+    <param.output>/home/nk/MATLAB/Interface2Polar_mlapp/mlapp</param.output>
     <param.guid>14c015e2-2945-45eb-9595-5d059379378f</param.guid>
     <unset>
       <param.company />
@@ -26,7 +26,6 @@
       <param.products.id />
       <param.products.version />
       <param.platforms />
-      <param.output />
     </unset>
     <fileset.main>
       <file>${PROJECT_ROOT}/analyse_photo_batch.m</file>
@@ -50,7 +49,7 @@
     </fileset.resources>
     <fileset.package />
     <build-deliverables>
-      <file location="/home/nk/MATLAB" name="Interface2Polar_mlapp" optional="false">/home/nk/MATLAB/Interface2Polar_mlapp</file>
+      <file location="/home/nk/MATLAB/Interface2Polar_mlapp" name="mlapp" optional="false">/home/nk/MATLAB/Interface2Polar_mlapp/mlapp</file>
     </build-deliverables>
     <workflow />
     <matlab>
@@ -66,7 +65,7 @@
       <vista>false</vista>
       <linux>true</linux>
       <solaris>false</solaris>
-      <osver>5.15.0-139-generic</osver>
+      <osver>5.4.0-216-generic</osver>
       <os32>false</os32>
       <os64>true</os64>
       <arch>glnxa64</arch>
