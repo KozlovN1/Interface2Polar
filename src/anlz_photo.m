@@ -4,7 +4,7 @@ function [pphi, rr, fig, fig1] = ...
     R_min, R_max, exportdir)
     
 %% Obtaining an interface coordinates from a colour photograph.
-% v.1.2 (2025-12-01)
+% v.1.5 (2026-06-21)
 % Nick Kozlov
     
     % Get the image
@@ -57,21 +57,23 @@ function [pphi, rr, fig, fig1] = ...
             % scan rigth to left
             j=ROI(4);
             while j>ROI(2)
-                i=ROI(3);
-                while i>center(1)
+                for i=ROI(3):-1:center(1)
+                % i=ROI(3);
+                % while i>center(1)
                     if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
                         counter=counter+1;
                         xintfc(counter)=i;
                         yintfc(counter)=j;
                         break;
                     end
-                    i=i-1;
+                    % i=i-1;
                 end
                 j=j-1;
             end
             % scan downwards
-            i=ROI(3);
-            while i>=ROI(1)
+            for i=ROI(3):-1:ROI(1)
+            % i=ROI(3);
+            % while i>=ROI(1)
                 j=ROI(2);
                 while j<center(2)
                     if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
@@ -82,7 +84,7 @@ function [pphi, rr, fig, fig1] = ...
                     end
                     j=j+1;
                 end
-                i=i-1;
+                % i=i-1;
             end
         case "outwards"
             % scan from center to the left
