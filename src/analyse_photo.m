@@ -1,7 +1,7 @@
 function analyse_photo()
 % Obtaining coordinates of a circular interface in polar coordinates 
 % from a photograph.
-% v.1.4.2 (2026-02-10)
+% v.1.4.3 (2026-06-21)
 % Nick Kozlov
 
 %% Init
@@ -32,6 +32,7 @@ else
     [filename,path] = uigetfile(suffix,'Select the file');
 end
 
+tic % DEBUG
 %% Main program
 % Do the evaluation %
 if runmode == "color"
@@ -106,4 +107,5 @@ if do_exportfig==true
     print(strcat(exportdir,filesep,filename,'.png'),'-dpng','-r300');
 end
 
+toc % DEBUG
 msgbox('We are done!');
