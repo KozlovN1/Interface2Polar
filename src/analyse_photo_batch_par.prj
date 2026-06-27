@@ -1,15 +1,17 @@
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
-  <configuration build-checksum="2778512619" file="/home/nk/MATLAB/Interface2Polar_mlapp/src/analyse_photo_batch_par.prj" location="/home/nk/MATLAB/Interface2Polar_mlapp/src" name="analyse_photo_batch_par" target="target.mlapps" target-name="Package App">
+  <configuration build-checksum="3806896126" file="/home/nk/MATLAB/Interface2Polar_mlapp/src/analyse_photo_batch_par.prj" location="/home/nk/MATLAB/Interface2Polar_mlapp/src" name="analyse_photo_batch_par" target="target.mlapps" target-name="Package App">
     <param.appname>analyse_photo_batch_par</param.appname>
     <param.authnamewatermark>Nick Kozlov</param.authnamewatermark>
     <param.email>nick.kzlv@gmail.com</param.email>
     <param.company />
-    <param.icon />
-    <param.icons />
+    <param.icon>${PROJECT_ROOT}/analyse_photo_batch_par_resources/icon_24.png</param.icon>
+    <param.icons>
+      <file>${PROJECT_ROOT}/analyse_photo_batch_par_resources/icon_48.png</file>
+      <file>${PROJECT_ROOT}/analyse_photo_batch_par_resources/icon_24.png</file>
+      <file>${PROJECT_ROOT}/analyse_photo_batch_par_resources/icon_16.png</file>
+    </param.icons>
     <param.summary>Reconstruct profile of a circular or close-ended interface in polar coordinates.</param.summary>
-    <param.description>Reconstruct profile of a circular or close-ended interface in polar coordinates.
-
-BETA version</param.description>
+    <param.description>Reconstruct profile of a circular or close-ended interface in polar coordinates.</param.description>
     <param.screenshot>${PROJECT_ROOT}/logo_batch256.png</param.screenshot>
     <param.version>1.6</param.version>
     <param.products.name />
@@ -20,8 +22,6 @@ BETA version</param.description>
     <param.guid>053eb823-2d50-4cee-837d-39c56b37fa83</param.guid>
     <unset>
       <param.company />
-      <param.icon />
-      <param.icons />
       <param.products.name />
       <param.products.id />
       <param.products.version />

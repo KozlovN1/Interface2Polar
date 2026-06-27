@@ -1,4 +1,4 @@
-% v.1.4.2 (2026-02-10)
+% v.1.6 (2026-02-27)
 % Nick Kozlov
 
 %% %Options: logical switches%
@@ -12,7 +12,7 @@ runmode = "colour"; % ["colour", "monochrome"]
 scandirection = "outwards"; % ["inwards", "outwards"]
 
 %% %Parameters%
-epsilon = 4; % ratio between colour channels or conrast criterion for monochrome signal
+epsilonn = 4; % ratio between colour channels or conrast criterion for monochrome signal
     ROI = [875, 311, 875+1681, 311+1681]; % [x1, y1, x2, y2] (pix)
  center = [1713, 1146]; % [xc, yc] (pix)
      R2 = 1761/2; % Radius of the studied domain (e.g. of a container or cell) (pix)

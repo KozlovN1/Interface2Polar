@@ -1,7 +1,7 @@
 function analyse_photo()
 % Obtaining coordinates of a circular interface in polar coordinates 
 % from a photograph.
-% v.1.4.4 (2026-06-27)
+% v.1.6 (2026-06-27)
 % Nick Kozlov
 
 %% Init

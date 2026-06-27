@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
-  <configuration build-checksum="4041293811" file="/home/nk/MATLAB/Interface2Polar_mlapp/src/analyse_photo_batch.prj" location="/home/nk/MATLAB/Interface2Polar_mlapp/src" name="analyse_photo_batch" target="target.mlapps" target-name="Package App">
+  <configuration build-checksum="1632050348" file="/home/nk/MATLAB/Interface2Polar_mlapp/src/analyse_photo_batch.prj" location="/home/nk/MATLAB/Interface2Polar_mlapp/src" name="analyse_photo_batch" target="target.mlapps" target-name="Package App">
     <param.appname>analyse_photo_batch</param.appname>
     <param.authnamewatermark>Nick Kozlov</param.authnamewatermark>
     <param.email>nick.kzlv@gmail.com</param.email>

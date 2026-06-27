@@ -1,4 +1,4 @@
-% v.0.9.6 (2025-03-05)
+% v.1.6 (2026-06-27)
 % Nick Kozlov
 
 deriv=zeros(ROI(4)-ROI(2),1);
@@ -15,10 +15,10 @@ norm=mean(deriv);
 limit1=0;
 limit2=0;
 for j=center(2):1:ROI(4)-1
-    if limit1==0 && deriv(j)-norm>=epsilon
+    if limit1==0 && deriv(j)-norm>=epsilonn
         limit1=j;
     end
-    if limit1~=0 && deriv(j)-norm<=epsilon
+    if limit1~=0 && deriv(j)-norm<=epsilonn
         limit2=j;
         break
     end
@@ -28,10 +28,10 @@ max_y0=limit1-1+find(deriv(limit1:limit2)==max(deriv(limit1:limit2)),1);
 limit1=0;
 limit2=0;
 for j=center(2):-1:1+1
-    if limit1==0 && deriv(j)-norm>=epsilon
+    if limit1==0 && deriv(j)-norm>=epsilonn
         limit1=j;
     end
-    if limit1~=0 && deriv(j)-norm<=epsilon
+    if limit1~=0 && deriv(j)-norm<=epsilonn
         limit2=j;
         break
     end
