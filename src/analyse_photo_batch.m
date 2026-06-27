@@ -66,8 +66,8 @@ switch runmode
                     ROI, center, R2, do_showfig, do_exportfig, do_exportprof0, do_circshift, ...
                     scandirection, R_min, R_max, exportdir);
             catch ME
-                disp(ME)
-                fprintf(f, "%s ;  %s\n", filenames{i}, "FAIL");
+                disp(ME) % DEBUG
+                fprintf(f, "%s ;  %s ;  %s\n", filenames{i}, "FAIL", ME.message);
                 error_count = error_count + 1;
                 if ~skip_error
                     handle_error;
@@ -85,7 +85,7 @@ switch runmode
                     continue
                 end
             end
-            fprintf(f, "%s ;  %s\n", filenames{i}, "Success!");
+            fprintf(f, "%s ;  %s ;  %s\n", filenames{i}, "Success!", " ");
             % postprocess & export here: %
             subroutine_batch;
         end
