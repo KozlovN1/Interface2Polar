@@ -1,0 +1,72 @@
+<deployment-project plugin="plugin.apptool" plugin-version="1.0">
+  <configuration build-checksum="1690592782" file="/home/nk/MATLAB/Interface2Polar_mlapp/src/analyse_photo.prj" location="/home/nk/MATLAB/Interface2Polar_mlapp/src" name="analyse_photo" target="target.mlapps" target-name="Package App">
+    <param.appname>analyse_photo</param.appname>
+    <param.authnamewatermark>Nick Kozlov</param.authnamewatermark>
+    <param.email>nick.kzlv@gmail.com</param.email>
+    <param.company />
+    <param.icon>${PROJECT_ROOT}/analyse_photo_resources/icon_24.png</param.icon>
+    <param.icons>
+      <file>${PROJECT_ROOT}/analyse_photo_resources/icon_48.png</file>
+      <file>${PROJECT_ROOT}/analyse_photo_resources/icon_24.png</file>
+      <file>${PROJECT_ROOT}/analyse_photo_resources/icon_16.png</file>
+    </param.icons>
+    <param.summary>Reconstruct profile of a circular or close-ended interface in polar coordinates</param.summary>
+    <param.description>Reconstruct profile of a circular or close-ended interface in polar coordinates</param.description>
+    <param.screenshot>${PROJECT_ROOT}/logo256.png</param.screenshot>
+    <param.version>1.6</param.version>
+    <param.products.name />
+    <param.products.id />
+    <param.products.version />
+    <param.platforms />
+    <param.output>/home/nk/MATLAB/Interface2Polar_mlapp/mlapp</param.output>
+    <param.guid>95e2393c-db49-4bcd-91a2-3d997fe0cece</param.guid>
+    <unset>
+      <param.company />
+      <param.products.name />
+      <param.products.id />
+      <param.products.version />
+      <param.platforms />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}/analyse_photo.m</file>
+    </fileset.main>
+    <fileset.depfun>
+      <file>${PROJECT_ROOT}/anlz_photo.m</file>
+      <file>${PROJECT_ROOT}/anlz_photo_bw.m</file>
+      <file>${PROJECT_ROOT}/export_averaged.m</file>
+      <file>${PROJECT_ROOT}/export_smoothed.m</file>
+      <file>${PROJECT_ROOT}/find_limits_x.m</file>
+      <file>${PROJECT_ROOT}/find_limits_y.m</file>
+      <file>${PROJECT_ROOT}/init_all.m</file>
+      <file>${PROJECT_ROOT}/local_average.m</file>
+      <file>${PROJECT_ROOT}/welcome_wizard.m</file>
+    </fileset.depfun>
+    <fileset.resources>
+      <file>${PROJECT_ROOT}/config_template.m</file>
+    </fileset.resources>
+    <fileset.package />
+    <build-deliverables>
+      <file location="/home/nk/MATLAB/Interface2Polar_mlapp" name="mlapp" optional="false">/home/nk/MATLAB/Interface2Polar_mlapp/mlapp</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>/usr/local/MATLAB/R2023b</root>
+      <toolboxes />
+    </matlab>
+    <platform>
+      <unix>true</unix>
+      <mac>false</mac>
+      <windows>false</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>true</linux>
+      <solaris>false</solaris>
+      <osver>5.4.0-216-generic</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>glnxa64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

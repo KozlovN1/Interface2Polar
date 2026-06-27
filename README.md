@@ -1,6 +1,8 @@
-Version 1.4 - 2026-02-10
+Version 1.6 - 2026-06-27
 
 The program reconstructs an azimuthal profile of a circular or close-ended interface from photographic images into polar coordinates. It can run in single or batch mode.
+
+Since version 1.6, parallel batch mode making use of parfor is available through function analyse_photo_batch_par.
 
 The usual technique for retrieving the interface between coloured and uncoloured liquids: scan from the clear fluid in the direction of the dyed one (see 'scandirection' below) and check the prescribed epsilon criterion (see 'epsilon' below). Doing the opposite way is allowed, but often less efficient.
 
@@ -13,7 +15,7 @@ a) The most important parameter is epsilon that characterizes ratio between colo
 
 b) R2 is the characteristic size of the image in pixels.
 
-c) In colour mode, parameter cl_pair lets one select two colour channels that are going to be compared for the interface criterion: epsilon is compared to cl_pair(,,1)/cl_pair(,,2).
+c) In colour mode, parameter cl_pair lets one select two colour channels that are going to be compared for the interface criterion: epsilonn is compared to cl_pair(,,1)/cl_pair(,,2). (V. 1.6: renaming: epsilon -> epsilonn, to avoid confusion with the function from Statistics and Machine Learning Toolbox).
 
 d) Parameter windoww permits to tune the averaging of the obtained azimuthal profile.
 
