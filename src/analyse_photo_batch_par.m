@@ -1,7 +1,7 @@
 function analyse_photo_batch_par()
 % Obtaining coordinates of a circular interface in polar coordinates 
 % from a photograph. Batch processing.
-% v.1.6 (2026-06-27)
+% v.1.6.beta (2026-06-27)
 % Nick Kozlov
 
 %% Init
