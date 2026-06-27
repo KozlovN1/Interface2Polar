@@ -1,7 +1,7 @@
 function analyse_photo()
 % Obtaining coordinates of a circular interface in polar coordinates 
 % from a photograph.
-% v.1.4.3 (2026-06-21)
+% v.1.4.4 (2026-06-27)
 % Nick Kozlov
 
 %% Init
@@ -70,7 +70,8 @@ catch
 end
 
 % Visualization %
-if do_showfig == true
+scrsz = get(0,'ScreenSize');
+if do_showfig==true
     figure(fig1);
     subplot(2,1,2);
     hold on;
@@ -78,10 +79,19 @@ if do_showfig == true
     errorbar(phi_av./pi,1-r_av/R2,error2./R2,'.');
     plot(phi_ed./pi,1-r_ed/R2,'LineWidth',2);
 
-    scrsz = get(0,'ScreenSize');
     fig2=figure('Name', strcat('Azimuthal profiles: ',filename) ,'Position',...
             [0 0 scrsz(3) scrsz(4)]); % ,'Visible','off');
     % set(fig2,'Visible','off');
+    hold on;
+    errorbar(phi_av./pi,1-r_av/R2,error2./R2,'.');
+    plot(phi_ed./pi,1-r_ed/R2,'LineWidth',2);
+    xlim([-1 1]);
+    title('Azimuthal profile');
+    xlabel('\phi/\pi'); 
+    ylabel('{\it h}/{\it R}_2');
+else
+    fig2=figure('Name', strcat('Azimuthal profiles: ',filename) ,'Position',...
+            [0 0 scrsz(3) scrsz(4)],'Visible','off');
     hold on;
     errorbar(phi_av./pi,1-r_av/R2,error2./R2,'.');
     plot(phi_ed./pi,1-r_ed/R2,'LineWidth',2);
