@@ -1,7 +1,7 @@
 function analyse_photo_batch()
 % Obtaining coordinates of a circular interface in polar coordinates 
 % from a photograph. Batch processing.
-% v.1.4.2 (2026-02-10)
+% v.1.6 (2026-06-27)
 % Nick Kozlov
 
 %% Init
@@ -50,6 +50,7 @@ filenames = sortrows(filenames); %sort all image files
 %% Select the images range
 [Nstart, Nfiles] = range_select(filenames, 'images');
 
+tic % DEBUG
 %% Main program
 if runmode == "color"
     runmode = "colour";
@@ -61,10 +62,11 @@ switch runmode
     case "colour"
         for i = Nstart:1:Nfiles
             try
-                [phi, r, fig, fig1] = anlz_photo(path, filenames{i}, epsilon, cl_pair, ...
+                [phi, r, fig, fig1] = anlz_photo(path, filenames{i}, epsilonn, cl_pair, ...
                     ROI, center, R2, do_showfig, do_exportfig, do_exportprof0, do_circshift, ...
                     scandirection, R_min, R_max, exportdir);
-            catch
+            catch ME
+                disp(ME)
                 fprintf(f, "%s ;  %s\n", filenames{i}, "FAIL");
                 error_count = error_count + 1;
                 if ~skip_error
@@ -90,7 +92,7 @@ switch runmode
     case "monochrome"
         for i = Nstart:1:Nfiles
             try
-                [phi, r, fig, fig1] = anlz_photo_bw(path, filenames{i}, epsilon, ROI, ...
+                [phi, r, fig, fig1] = anlz_photo_bw(path, filenames{i}, epsilonn, ROI, ...
                     center, R2, do_showfig, do_exportfig, do_exportprof0, R_min, R_max, exportdir);
             catch
                 fprintf(f, "%s ;  %s\n", filenames{i}, "FAIL");
@@ -118,6 +120,7 @@ switch runmode
         end
 end
 fclose(f);
+toc % DEBUG
 disp('We are done!')
 fprintf("%s\n", "Summary:")
 fprintf("%g %s\n", Nfiles-Nstart+1-error_count, " of files sucessfully processed.")

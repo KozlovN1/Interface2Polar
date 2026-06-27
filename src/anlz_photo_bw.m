@@ -1,9 +1,9 @@
 function [pphi, rr, fig, fig1] = ...
-    anlz_photo_bw(path, filename, epsilon, ROI, center, ...
+    anlz_photo_bw(path, filename, epsilonn, ROI, center, ...
     R2, showfig, exportfig, exportprof, R_min, R_max, exportdir)
     
 %% Obtaining interface coordinates from a grayscale photograph.
-% v.0.9.10 (2025-03-18)
+% v.1.6 (2026-06-27)
 % Nick Kozlov
     
     % Get the image
@@ -46,10 +46,10 @@ function [pphi, rr, fig, fig1] = ...
         limit1=0;
 %         limit2=0;
         for i=center(1):1:ROI(3)-1 % <---
-            if limit1==0 && deriv(i)-norm>=epsilon
+            if limit1==0 && deriv(i)-norm>=epsilonn
                 limit1=i;
             end
-            if limit1~=0 && deriv(i)-norm<=epsilon
+            if limit1~=0 && deriv(i)-norm<=epsilonn
                 limit2=i;
                 counter=counter+1;
                 xintfc(counter)=limit1-1+find(deriv(limit1:limit2)==max(deriv(limit1:limit2)),1);
@@ -70,10 +70,10 @@ function [pphi, rr, fig, fig1] = ...
         limit1=0;
 %         limit2=0;
         for j=center(2):-1:ROI(2) % <---
-            if limit1==0 && deriv(j)-norm>=epsilon
+            if limit1==0 && deriv(j)-norm>=epsilonn
                 limit1=j;
             end
-            if limit1~=0 && deriv(j)-norm<=epsilon
+            if limit1~=0 && deriv(j)-norm<=epsilonn
                 limit2=j;
                 counter=counter+1;
                 xintfc(counter)=i;
@@ -94,10 +94,10 @@ function [pphi, rr, fig, fig1] = ...
         limit1=0;
 %         limit2=0;
         for i=center(1):-1:ROI(1)
-            if limit1==0 && deriv(i)-norm>=epsilon
+            if limit1==0 && deriv(i)-norm>=epsilonn
                 limit1=i;
             end
-            if limit1~=0 && deriv(i)-norm<=epsilon
+            if limit1~=0 && deriv(i)-norm<=epsilonn
                 limit2=i;
                 counter=counter+1;
                 xintfc(counter)=limit2-1+find(deriv(limit2:limit1)==max(deriv(limit2:limit1)),1);
@@ -119,10 +119,10 @@ function [pphi, rr, fig, fig1] = ...
         limit1=0;
 %         limit2=0;
         for j=center(2):1:ROI(4)-1 % <---
-            if limit1==0 && deriv(j)-norm>=epsilon
+            if limit1==0 && deriv(j)-norm>=epsilonn
                 limit1=j;
             end
-            if limit1~=0 && deriv(j)-norm<=epsilon
+            if limit1~=0 && deriv(j)-norm<=epsilonn
                 limit2=j;
                 counter=counter+1;
                 xintfc(counter)=i;

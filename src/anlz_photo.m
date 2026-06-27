@@ -1,10 +1,10 @@
 function [pphi, rr, fig, fig1] = ...
-    anlz_photo(path, filename, epsilon, cl_pair, ROI, center, ...
+    anlz_photo(path, filename, epsilonn, cl_pair, ROI, center, ...
     R2, showfig, exportfig, exportprof, do_circshift, scandirection, ...
     R_min, R_max, exportdir)
     
 %% Obtaining an interface coordinates from a colour photograph.
-% v.1.5 (2026-06-21)
+% v.1.6 (2026-06-27)
 % Nick Kozlov
     
     % Get the image
@@ -33,7 +33,7 @@ function [pphi, rr, fig, fig1] = ...
             % scan left to right
             for j=ROI(2):1:ROI(4)
                 for i=ROI(1):1:center(1)
-                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilonn
                         counter=counter+1;
                         xintfc(counter)=i;
                         yintfc(counter)=j;
@@ -45,7 +45,7 @@ function [pphi, rr, fig, fig1] = ...
             for i=ROI(1):1:ROI(3)
                 j=ROI(4);
                 while j>center(2)
-                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilonn
                         counter=counter+1;
                         xintfc(counter)=i;
                         yintfc(counter)=j;
@@ -60,7 +60,7 @@ function [pphi, rr, fig, fig1] = ...
                 for i=ROI(3):-1:center(1)
                 % i=ROI(3);
                 % while i>center(1)
-                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilonn
                         counter=counter+1;
                         xintfc(counter)=i;
                         yintfc(counter)=j;
@@ -76,7 +76,7 @@ function [pphi, rr, fig, fig1] = ...
             % while i>=ROI(1)
                 j=ROI(2);
                 while j<center(2)
-                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilonn
                         counter=counter+1;
                         xintfc(counter)=i;
                         yintfc(counter)=j;
@@ -90,7 +90,7 @@ function [pphi, rr, fig, fig1] = ...
             % scan from center to the left
             for j=ROI(2):1:ROI(4)
                 for i=center(1):-1:ROI(1)
-                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilonn
                         if i == center(1)
                             break;
                         end
@@ -104,7 +104,7 @@ function [pphi, rr, fig, fig1] = ...
             % scan from center downwards
             for i=ROI(1):1:ROI(3)
                 for j=center(2):1:ROI(4)
-                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilonn
                         if j == center(2)
                             break;
                         end
@@ -118,7 +118,7 @@ function [pphi, rr, fig, fig1] = ...
             % scan from center to the right
             for j=ROI(2):1:ROI(4)
                 for i=center(1):1:ROI(3)
-                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilonn
                         if i == center(1)
                             break;
                         end
@@ -132,7 +132,7 @@ function [pphi, rr, fig, fig1] = ...
             % scan from center upwards
             for i=ROI(1):1:ROI(3)
                 for j=center(2):-1:ROI(2)
-                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilon
+                    if image1(j,i,cl_pair(1) )/image1(j,i,cl_pair(2) ) >= epsilonn
                         if j == center(2)
                             break;
                         end
